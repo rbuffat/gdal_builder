@@ -45,7 +45,7 @@ GDALOPTS="  --with-ogr \
             --without-mrf \
             --with-webp=no"
 
-git clone --single-branch --branch gh-pages git@github.com:rbuffat/gdal_builder.git $GHPAGESDIR
+git clone --single-branch --branch gh-pages https://github.com/rbuffat/gdal_builder.git $GHPAGESDIR
 rm -rf $GHPAGESDIR/.git
             
 for GDALVERSION in $GDAL_VERSIONS; do
