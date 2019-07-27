@@ -46,7 +46,7 @@ GDALOPTS="  --with-ogr \
             --with-webp=no \
             --with-proj=$GDALINST/proj-$PROJVERSION"
 
-for gdal in $GDAL_VERSIONS; do
+for GDALVERSION in $GDAL_VERSIONS; do
 
     # Create build dir if not exists
     if [ ! -d "$GDALBUILD" ]; then
