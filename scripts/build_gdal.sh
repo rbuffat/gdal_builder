@@ -51,6 +51,8 @@ ls -lh $GHPAGESDIR
             
 for GDALVERSION in $GDAL_VERSIONS; do
 
+    BASE_GDALVERSION=$(sed 's/[a-zA-Z].*//g' <<< $GDALVERSION)
+
     # Create build dir if not exists
     if [ ! -d "$GDALBUILD" ]; then
     mkdir $GDALBUILD;
@@ -62,11 +64,11 @@ for GDALVERSION in $GDAL_VERSIONS; do
 
     ls -l $GDALINST
 
-    if [ ! -d "$GHPAGESDIR/gdal_$BASE_GDALVERSION-1_amd64.deb" ]; then
-        # only build if not already installed #TODO change to if deb exists
-        cd $GDALBUILD
 
-        BASE_GDALVERSION=$(sed 's/[a-zA-Z].*//g' <<< $GDALVERSION)
+    # only build if not already installed
+    if [ ! -d "$GHPAGESDIR/gdal_$BASE_GDALVERSION-1_amd64.deb" ]; then
+
+        cd $GDALBUILD
 
         if ( curl -o/dev/null -sfI "http://download.osgeo.org/gdal/$BASE_GDALVERSION/gdal-$GDALVERSION.tar.gz" ); then
             wget http://download.osgeo.org/gdal/$BASE_GDALVERSION/gdal-$GDALVERSION.tar.gz
