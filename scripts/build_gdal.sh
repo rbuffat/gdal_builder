@@ -43,8 +43,7 @@ GDALOPTS="  --with-ogr \
             --without-python
             --with-oci=no \
             --without-mrf \
-            --with-webp=no \
-            --with-proj=$GDALINST/proj-$PROJVERSION"
+            --with-webp=no"
 
 for GDALVERSION in $GDAL_VERSIONS; do
 
