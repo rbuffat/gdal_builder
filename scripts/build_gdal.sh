@@ -82,8 +82,8 @@ for GDALVERSION in $GDAL_VERSIONS; do
         make -j 2
 
         # Create deb package
-        echo "gdal binary created to be used on travis. Do not use this file otherwise!" > description-pak
-        checkinstall -D --nodoc --install=no --review-control=no -y
+        echo "gdal binary created to be used on travis. Do not use this file if you don't know what you are doing!" > description-pak
+        checkinstall -D --nodoc --install=no -y
         
         ls -l
 
