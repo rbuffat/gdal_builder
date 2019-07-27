@@ -66,7 +66,7 @@ for GDALVERSION in $GDAL_VERSIONS; do
 
 
     # only build if not already installed
-    if [ ! -d "$GHPAGESDIR/gdal_$BASE_GDALVERSION-1_amd64.deb" ]; then
+    if [ ! "$GHPAGESDIR/gdal_$GDALVERSION-1_amd64.deb" ]; then
 
         cd $GDALBUILD
 
@@ -92,7 +92,7 @@ for GDALVERSION in $GDAL_VERSIONS; do
         checkinstall -D --nodoc --install=no -y
         
         ls -lh        
-        mv "gdal_$BASE_GDALVERSION-1_amd64.deb" "$GHPAGESDIR"
+        mv "gdal_$BASE_GDALVERSION-1_amd64.deb" "$GHPAGESDIR/gdal_$GDALVERSION-1_amd64.deb"
 
 
         # Clean
