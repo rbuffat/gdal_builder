@@ -5,12 +5,20 @@ language: minimal
 sudo: true
 
 env:
-  global:
-    - PROJVERSION="6.0.0"
+    global:
+        - GDAL_VERSIONS="2.3.3 2.4.2"
 
-before_install:
-  - sudo apt-get update
-  - sudo apt-get install -y checkinstall build-essential automake autoconf libtool pkg-config libhdf5-serial-dev libatlas-dev libatlas-base-dev gfortran libsqlite3-dev sqlite3
+addons:
+  apt:
+    packages:
+    - libhdf5-serial-dev
+    - libatlas-dev
+    - libatlas-base-dev
+    - gfortran
+    - libsqlite3-dev
+    - sqlite3
+    - checkinstall
 
 install:
-  - . ./scripts/build_proj.sh
+  - . ./scripts/build_gdal.sh
+  
