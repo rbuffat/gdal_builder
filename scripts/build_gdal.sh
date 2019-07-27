@@ -47,6 +47,7 @@ GDALOPTS="  --with-ogr \
 
 git clone --single-branch --branch gh-pages https://github.com/rbuffat/gdal_builder.git $GHPAGESDIR
 rm -rf $GHPAGESDIR/.git
+ls -lh $GHPAGESDIR
             
 for GDALVERSION in $GDAL_VERSIONS; do
 
@@ -88,10 +89,9 @@ for GDALVERSION in $GDAL_VERSIONS; do
         echo "gdal binary created to be used on travis. Do not use this file if you don't know what you are doing!" > description-pak
         checkinstall -D --nodoc --install=no -y
         
-        
+        ls -lh        
         mv "gdal_$BASE_GDALVERSION-1_amd64.deb" "$GHPAGESDIR"
 
-        ls -l
 
         # Clean
         rm -rf $GDALBUILD
@@ -101,3 +101,6 @@ for GDALVERSION in $GDAL_VERSIONS; do
     # change back to travis build dir
     cd $TRAVIS_BUILD_DIR
 done
+
+ls -lh $GHPAGESDIR
+
