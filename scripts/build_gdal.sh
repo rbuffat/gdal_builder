@@ -147,5 +147,3 @@ echo "Done building gdal"
 
 ls -lh $GHPAGESDIR
 
-exit 0
-
