@@ -1,8 +1,6 @@
 #!/bin/sh
 set -e
 
-ls -lh $GHPAGESDIR
-
 GDALOPTS="  --with-ogr \
             --with-geos \
             --with-expat \
@@ -131,6 +129,8 @@ for GDALVERSION in $GDAL_VERSIONS; do
     # change back to travis build dir
     cd $TRAVIS_BUILD_DIR
 done
+
+echo "Done building gdal"
 
 ls -lh $GHPAGESDIR
 
