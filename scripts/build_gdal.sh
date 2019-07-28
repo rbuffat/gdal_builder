@@ -121,8 +121,12 @@ for GDALVERSION in $GDAL_VERSIONS; do
         if $(dpkg --compare-versions "$GDALVERSION" "ge" "3.0"); then
             sudo dpkg -r proj
         else
-        
+    
+    else
+        echo "Deb found, skipping"
+    
     fi
+    
 
     # change back to travis build dir
     cd $TRAVIS_BUILD_DIR

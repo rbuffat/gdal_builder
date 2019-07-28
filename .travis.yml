@@ -30,7 +30,7 @@ before_install:
   - rm -rf $GHPAGESDIR/.git
     
 install:
-  - . ./scripts/build_proj.sh
+#  - . ./scripts/build_proj.sh
   - . ./scripts/build_gdal.sh
   
 deploy:
