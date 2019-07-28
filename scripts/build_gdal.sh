@@ -101,7 +101,7 @@ for GDALVERSION in $GDAL_VERSIONS; do
         fi
         
         echo $GDALOPTS $GDALOPTS_PROJ
-        ./configure --prefix=$GDALINST/gdal-$GDALVERSION $GDALOPTS
+        ./configure --prefix=$GDALINST/gdal-$GDALVERSION $GDALOPTS $GDALOPTS_PROJ
         make -j 2
 
         # Create deb package
