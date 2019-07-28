@@ -49,6 +49,8 @@ GDALOPTS="  --with-ogr \
             
 for GDALVERSION in $GDAL_VERSIONS; do
 
+    echo "Processing gdal: $GDALVERSION"
+
     BASE_GDALVERSION=$(sed 's/[a-zA-Z].*//g' <<< $GDALVERSION)
 
     # Create build dir if not exists
@@ -76,6 +78,7 @@ for GDALVERSION in $GDAL_VERSIONS; do
             
             # install proj dependency
             if [ ! -f "$GHPAGESDIR/proj_$PROJVERSION-1_amd64.deb" ]; then
+                echo "Proj deb not found: $GHPAGESDIR/proj_$PROJVERSION-1_amd64.deb"
                 exit 1
             else
                 sudo dpkg -i "$GHPAGESDIR/proj_$PROJVERSION-1_amd64.deb"
