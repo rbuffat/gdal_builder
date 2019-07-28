@@ -16,7 +16,7 @@ ls -l $PROJINST
 
 echo "$GHPAGESDIR/proj_$PROJVERSION-1_amd64.deb"
 
-if [ ! "$GHPAGESDIR/proj_$PROJVERSION-1_amd64.deb" ]; then
+if [ ! -f "$GHPAGESDIR/proj_$PROJVERSION-1_amd64.deb" ]; then
     
     cd $PROJBUILD
 

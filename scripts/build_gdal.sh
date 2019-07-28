@@ -69,7 +69,7 @@ for GDALVERSION in $GDAL_VERSIONS; do
     fi
     
     # only build if not already installed
-    if [ ! "$GHPAGESDIR/gdal_$GDALVERSION-1_amd64.deb" ]; then
+    if [ ! -f "$GHPAGESDIR/gdal_$GDALVERSION-1_amd64.deb" ]; then
 
         cd $GDALBUIL
 
