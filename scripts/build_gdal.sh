@@ -63,7 +63,6 @@ for GDALVERSION in $GDAL_VERSIONS; do
 
     ls -l $GDALINST
 
-    
     # only build if not already installed
     if [ ! -f "$GHPAGESDIR/gdal_$GDALVERSION-1_amd64.deb" ]; then
     
@@ -72,9 +71,9 @@ for GDALVERSION in $GDAL_VERSIONS; do
         DEB_DEPENDENCIES=""
         if $(dpkg --compare-versions "$GDALVERSION" "ge" "2.5"); then
             GDALOPTS_PROJ="--with-proj=$PROJINST/proj-$PROJVERSION";
-            # DEB_DEPENDENCIES='--requires="proj (= $PROJVERSION)"'
+            DEB_DEPENDENCIES='--requires="proj (= $PROJVERSION)"'
             echo $DEB_DEPENDENCIES
-            
+
             # install proj dependency
             if [ ! -f "$GHPAGESDIR/proj_$PROJVERSION-1_amd64.deb" ]; then
                 echo "Proj deb not found: $GHPAGESDIR/proj_$PROJVERSION-1_amd64.deb"
@@ -112,7 +111,6 @@ for GDALVERSION in $GDAL_VERSIONS; do
         ls -lh        
         mv "gdal_$BASE_GDALVERSION-1_amd64.deb" "$GHPAGESDIR/gdal_$GDALVERSION-1_amd64.deb"
 
-
         # Clean
         rm -rf $GDALBUILD
         rm -rf $GDALINST
@@ -123,9 +121,7 @@ for GDALVERSION in $GDAL_VERSIONS; do
     
     else
         echo "Deb found, skipping"
-    
     fi
-    
 
     # change back to travis build dir
     cd $TRAVIS_BUILD_DIR

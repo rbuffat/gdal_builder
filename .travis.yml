@@ -7,7 +7,7 @@ sudo: true
 env:
   global:
     - PROJVERSION="6.1.1"
-    - GDAL_VERSIONS="2.3.3 2.4.2 3.0.1 2.5.0rc1"
+    - GDAL_VERSIONS="2.2.4 2.3.3 2.4.2 3.0.1 2.5.0rc1"
     - PROJBUILD=$HOME/projbuild
     - PROJINST=$HOME/projinstall
     - GDALINST=$HOME/gdalinstall
