@@ -49,7 +49,6 @@ for GDALVERSION in $GDAL_VERSIONS; do
 
     echo "Processing gdal: $GDALVERSION"
 
-    # Gdal beta versions have file name 3.0.0b1, but present themselv as
     BASE_GDALVERSION=$(sed 's/[a-zA-Z].*//g' <<< $GDALVERSION)
 
     # Create build dir if not exists
@@ -69,10 +68,10 @@ for GDALVERSION in $GDAL_VERSIONS; do
             rm "$GHPAGESDIR/gdal_$GDALVERSION-1_amd64.deb"
         fi
     
-        # GDAL proj option
+        # Only GDAL versions >= 2.5 requires proj6
         GDALOPTS_PROJ=""
         DEB_DEPENDENCIES=""
-        if $(dpkg --compare-versions "$GDALVERSION" "ge" "2.5") ||  [ "$GDALVERSION" = "trunk" ]; then
+        if [$(dpkg --compare-versions "$GDALVERSION" "ge" "2.5")] ||  [ "$GDALVERSION" = "trunk" ]; then
         
             GDALOPTS_PROJ="--with-proj=$PROJINST/proj-$PROJVERSION";
             DEB_DEPENDENCIES="--requires=\"proj\""
@@ -85,17 +84,20 @@ for GDALVERSION in $GDAL_VERSIONS; do
             else
                 sudo dpkg -i "$GHPAGESDIR/proj_$PROJVERSION-1_amd64.deb"
             fi
-            
         fi
-
-        cd $GDALBUIL
-
         
+        PKGVERSION=""        
         if [ "$GDALVERSION" = "trunk" ]; then
             git clone -b master --single-branch --depth=1 https://github.com/OSGeo/gdal.git $GDALBUILD/trunk
             cd $GDALBUILD/trunk/gdal
+            
+            TRUNKVERSION=`cat $GDALBUILD/trunk/gdal/VERSION`
+            PKGVERSION="--pkgversion=\"$TRUNKVERSION\""
+            echo $PKGVERSION
         
         else
+        
+            cd $GDALBUILD
 
             if ( curl -o/dev/null -sfI "http://download.osgeo.org/gdal/$BASE_GDALVERSION/gdal-$GDALVERSION.tar.gz" ); then
                 wget http://download.osgeo.org/gdal/$BASE_GDALVERSION/gdal-$GDALVERSION.tar.gz
@@ -118,16 +120,16 @@ for GDALVERSION in $GDAL_VERSIONS; do
 
         # Create deb package
         echo "gdal binary created to be used on travis. Do not use this file if you don't know what you are doing!" > description-pak
-        checkinstall -D $DEB_DEPENDENCIES --nodoc --install=no -y
+        checkinstall -D $DEB_DEPENDENCIES $PKGVERSION --nodoc --install=no -y
         
         ls -lh        
         mv "gdal_*-1_amd64.deb" "$GHPAGESDIR/gdal_$GDALVERSION-1_amd64.deb"
 
-        # Clean
+        # Clean up
         rm -rf $GDALBUILD
         rm -rf $GDALINST
         
-        if $(dpkg --compare-versions "$GDALVERSION" "ge" "2.5"); then
+        if [$(dpkg --compare-versions "$GDALVERSION" "ge" "2.5")] ||  [ "$GDALVERSION" = "trunk" ]; then
             sudo dpkg -r proj
         fi
     
