@@ -64,7 +64,7 @@ for GDALVERSION in $GDAL_VERSIONS; do
     if [ ! -f "$GHPAGESDIR/gdal_$GDALVERSION-1_amd64.deb" ] || [ "$GDALVERSION" = "trunk" ]; then
         echo "4"
         # We always rebuild trunk
-        if [-f "$GHPAGESDIR/proj_$PROJVERSION-1_amd64.deb" ] && [ "$GDALVERSION" = "trunk" ]; then
+        if [ -f "$GHPAGESDIR/proj_$PROJVERSION-1_amd64.deb" ] && [ "$GDALVERSION" = "trunk" ]; then
             echo "5"
             rm "$GHPAGESDIR/gdal_$GDALVERSION-1_amd64.deb"
         fi
