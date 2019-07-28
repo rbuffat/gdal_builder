@@ -62,12 +62,17 @@ for GDALVERSION in $GDAL_VERSIONS; do
     fi
 
     # only build if not already built before
-    if [ ! -f "$GHPAGESDIR/gdal_$GDALVERSION-1_amd64.deb" ]; then
+    if [ ! -f "$GHPAGESDIR/gdal_$GDALVERSION-1_amd64.deb" ] && [! "$GDALVERSION" = "trunk" ]; then
+    
+        # We always rebuild trunk
+        if ["$GDALVERSION" = "trunk" ]; then
+            rm "$GHPAGESDIR/gdal_$GDALVERSION-1_amd64.deb"
+        fi
     
         # GDAL proj option
         GDALOPTS_PROJ=""
         DEB_DEPENDENCIES=""
-        if $(dpkg --compare-versions "$GDALVERSION" "ge" "2.5"); then
+        if $(dpkg --compare-versions "$GDALVERSION" "ge" "2.5") ||  [ "$GDALVERSION" = "trunk" ]; then
         
             GDALOPTS_PROJ="--with-proj=$PROJINST/proj-$PROJVERSION";
             DEB_DEPENDENCIES="--requires=\"proj\""
@@ -85,18 +90,26 @@ for GDALVERSION in $GDAL_VERSIONS; do
 
         cd $GDALBUIL
 
-        if ( curl -o/dev/null -sfI "http://download.osgeo.org/gdal/$BASE_GDALVERSION/gdal-$GDALVERSION.tar.gz" ); then
-            wget http://download.osgeo.org/gdal/$BASE_GDALVERSION/gdal-$GDALVERSION.tar.gz
-        else
-            wget http://download.osgeo.org/gdal/old_releases/gdal-$GDALVERSION.tar.gz
-        fi
-
-        tar -xzf gdal-$GDALVERSION.tar.gz
         
-        if [ -d "gdal-$BASE_GDALVERSION" ]; then
-            cd gdal-$BASE_GDALVERSION
-        elif [ -d "gdal-$GDALVERSION" ]; then
-            cd gdal-$GDALVERSION
+        if [ "$GDALVERSION" = "trunk" ]; then
+            git clone -b master --single-branch --depth=1 https://github.com/OSGeo/gdal.git $GDALBUILD/trunk
+            cd $GDALBUILD/trunk/gdal
+        
+        else
+
+            if ( curl -o/dev/null -sfI "http://download.osgeo.org/gdal/$BASE_GDALVERSION/gdal-$GDALVERSION.tar.gz" ); then
+                wget http://download.osgeo.org/gdal/$BASE_GDALVERSION/gdal-$GDALVERSION.tar.gz
+            else
+                wget http://download.osgeo.org/gdal/old_releases/gdal-$GDALVERSION.tar.gz
+            fi
+
+            tar -xzf gdal-$GDALVERSION.tar.gz
+            
+            if [ -d "gdal-$BASE_GDALVERSION" ]; then
+                cd gdal-$BASE_GDALVERSION
+            elif [ -d "gdal-$GDALVERSION" ]; then
+                cd gdal-$GDALVERSION
+            fi
         fi
         
         echo $GDALOPTS $GDALOPTS_PROJ
