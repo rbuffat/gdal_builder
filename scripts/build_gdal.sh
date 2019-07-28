@@ -72,7 +72,7 @@ for GDALVERSION in $GDAL_VERSIONS; do
         DEB_DEPENDENCIES=""
         if $(dpkg --compare-versions "$GDALVERSION" "ge" "2.5"); then
             GDALOPTS_PROJ="--with-proj=$PROJINST/proj-$PROJVERSION";
-            DEB_DEPENDENCIES="--requires=\"proj \(\>= $PROJVERSION\)\""
+            DEB_DEPENDENCIES='--requires="proj (= $PROJVERSION)"'
             echo $DEB_DEPENDENCIES
             
             # install proj dependency
@@ -107,7 +107,7 @@ for GDALVERSION in $GDAL_VERSIONS; do
 
         # Create deb package
         echo "gdal binary created to be used on travis. Do not use this file if you don't know what you are doing!" > description-pak
-        checkinstall -D --nodoc --install=no -y $DEB_DEPENDENCIES
+        checkinstall -D $DEB_DEPENDENCIES --nodoc --install=no -y
         
         ls -lh        
         mv "gdal_$BASE_GDALVERSION-1_amd64.deb" "$GHPAGESDIR/gdal_$GDALVERSION-1_amd64.deb"
