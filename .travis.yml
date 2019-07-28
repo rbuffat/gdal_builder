@@ -31,7 +31,7 @@ before_install:
     
 install:
   - . ./scripts/build_proj.sh
-  - . ./scripts/build_gdal.sh
+#  - . ./scripts/build_gdal.sh
   
 deploy:
   provider: pages

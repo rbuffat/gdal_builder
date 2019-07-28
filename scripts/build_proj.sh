@@ -14,7 +14,10 @@ fi
 
 ls -l $PROJINST
 
+echo "$GHPAGESDIR/proj_$PROJVERSION-1_amd64.deb"
+
 if [ ! "$GHPAGESDIR/proj_$PROJVERSION-1_amd64.deb" ]; then
+    
     cd $PROJBUILD
 
     wget http://download.osgeo.org/proj/proj-$PROJVERSION.tar.gz
@@ -24,7 +27,7 @@ if [ ! "$GHPAGESDIR/proj_$PROJVERSION-1_amd64.deb" ]; then
     make -j 2
 
     # Create deb package
-    echo "gdal binary created to be used on travis. Do not use this file if you don't know what you are doing!" > description-pak
+    echo "proj binary created to be used on travis. Do not use this file if you don't know what you are doing!" > description-pak
     checkinstall -D --nodoc --install=no -y
 
     ls -lh        
