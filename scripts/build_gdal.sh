@@ -50,26 +50,24 @@ for GDALVERSION in $GDAL_VERSIONS; do
     echo "Processing gdal: $GDALVERSION"
 
     BASE_GDALVERSION=$(sed 's/[a-zA-Z].*//g' <<< $GDALVERSION)
-    echo "1"
+
     # Create build dir if not exists
     if [ ! -d "$GDALBUILD" ]; then
         mkdir $GDALBUILD;
     fi
-    echo "2"
+
     if [ ! -d "$GDALINST" ]; then
         mkdir $GDALINST;
     fi
-    echo "3"
+
     # only build if not already built before
     if [ ! -f "$GHPAGESDIR/gdal_$GDALVERSION-1_amd64.deb" ] || [ "$GDALVERSION" = "trunk" ]; then
-        echo "4"
-        # We always rebuild trunk
-        if [ -f "$GHPAGESDIR/proj_$PROJVERSION-1_amd64.deb" ] && [ "$GDALVERSION" = "trunk" ]; then
-            echo "5"
+
+    # We always rebuild trunk
+        if [ -f "$GHPAGESDIR/gdal_$GDALVERSION-1_amd64.deb" ] && [ "$GDALVERSION" = "trunk" ]; then
             rm "$GHPAGESDIR/gdal_$GDALVERSION-1_amd64.deb"
         fi
     
-        echo "6"
         # Only GDAL versions >= 2.5 requires proj6
         GDALOPTS_PROJ=""
         DEB_DEPENDENCIES=""
