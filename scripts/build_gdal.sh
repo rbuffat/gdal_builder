@@ -49,6 +49,7 @@ for GDALVERSION in $GDAL_VERSIONS; do
 
     echo "Processing gdal: $GDALVERSION"
 
+    # Gdal beta versions have file name 3.0.0b1, but present themselv as
     BASE_GDALVERSION=$(sed 's/[a-zA-Z].*//g' <<< $GDALVERSION)
 
     # Create build dir if not exists
@@ -69,7 +70,7 @@ for GDALVERSION in $GDAL_VERSIONS; do
         # GDAL proj option
         GDALOPTS_PROJ=""
         DEB_DEPENDENCIES=""
-        if $(dpkg --compare-versions "$GDALVERSION" "ge" "3.0"); then
+        if $(dpkg --compare-versions "$GDALVERSION" "ge" "2.5"); then
             GDALOPTS_PROJ="--with-proj=$PROJINST/proj-$PROJVERSION";
             DEB_DEPENDENCIES="--requires=\"proj \(\>= $PROJVERSION\)\""
             echo $DEB_DEPENDENCIES
@@ -106,7 +107,7 @@ for GDALVERSION in $GDAL_VERSIONS; do
 
         # Create deb package
         echo "gdal binary created to be used on travis. Do not use this file if you don't know what you are doing!" > description-pak
-        checkinstall -D --nodoc --install=no -y DEB_DEPENDENCIES
+        checkinstall -D --nodoc --install=no -y $DEB_DEPENDENCIES
         
         ls -lh        
         mv "gdal_$BASE_GDALVERSION-1_amd64.deb" "$GHPAGESDIR/gdal_$GDALVERSION-1_amd64.deb"
@@ -116,7 +117,7 @@ for GDALVERSION in $GDAL_VERSIONS; do
         rm -rf $GDALBUILD
         rm -rf $GDALINST
         
-        if $(dpkg --compare-versions "$GDALVERSION" "ge" "3.0"); then
+        if $(dpkg --compare-versions "$GDALVERSION" "ge" "2.5"); then
             sudo dpkg -r proj
         fi
     
