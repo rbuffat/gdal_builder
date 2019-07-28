@@ -1,6 +1,8 @@
 #!/bin/sh
 set -e
 
+ls -lh $GHPAGESDIR
+
 GDALOPTS="  --with-ogr \
             --with-geos \
             --with-expat \
@@ -44,10 +46,6 @@ GDALOPTS="  --with-ogr \
             --with-oci=no \
             --without-mrf \
             --with-webp=no"
-
-git clone --single-branch --branch gh-pages https://github.com/rbuffat/gdal_builder.git $GHPAGESDIR
-rm -rf $GHPAGESDIR/.git
-ls -lh $GHPAGESDIR
             
 for GDALVERSION in $GDAL_VERSIONS; do
 
@@ -64,11 +62,16 @@ for GDALVERSION in $GDAL_VERSIONS; do
 
     ls -l $GDALINST
 
-
+    # GDAL proj option
+    GDALOPTS_PROJ=""
+    if $(dpkg --compare-versions "$GDALVERSION" "ge" "3.0"); then
+        GDALOPTS_PROJ="--with-proj=$PROJINST/proj-$PROJVERSION";
+    fi
+    
     # only build if not already installed
     if [ ! "$GHPAGESDIR/gdal_$GDALVERSION-1_amd64.deb" ]; then
 
-        cd $GDALBUILD
+        cd $GDALBUIL
 
         if ( curl -o/dev/null -sfI "http://download.osgeo.org/gdal/$BASE_GDALVERSION/gdal-$GDALVERSION.tar.gz" ); then
             wget http://download.osgeo.org/gdal/$BASE_GDALVERSION/gdal-$GDALVERSION.tar.gz
@@ -84,6 +87,7 @@ for GDALVERSION in $GDAL_VERSIONS; do
             cd gdal-$GDALVERSION
         fi
         
+        echo $GDALOPTS $GDALOPTS_PROJ
         ./configure --prefix=$GDALINST/gdal-$GDALVERSION $GDALOPTS
         make -j 2
 

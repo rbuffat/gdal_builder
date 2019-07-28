@@ -6,11 +6,14 @@ sudo: true
 
 env:
   global:
-    - GDAL_VERSIONS="2.3.3 2.4.2"
+    - PYPROJ_VERSION="6.1.1"
+    - GDAL_VERSIONS="2.3.3 2.4.2 3.0.1"
+    - PROJBUILD=$HOME/projbuild
+    - PROJINST=$HOME/projinstall
     - GDALINST=$HOME/gdalinstall
     - GDALBUILD=$HOME/gdalbuild
     - GHPAGESDIR=$HOME/ghpages
-
+    
 addons:
   apt:
     packages:
@@ -21,8 +24,13 @@ addons:
     - libsqlite3-dev
     - sqlite3
     - checkinstall
+
+before_install:
+  - git clone --single-branch --branch gh-pages https://github.com/rbuffat/gdal_builder.git $GHPAGESDIR
+  - rm -rf $GHPAGESDIR/.git
     
 install:
+  - . ./scripts/build_pyroj.sh
   - . ./scripts/build_gdal.sh
   
 deploy:
