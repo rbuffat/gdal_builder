@@ -118,7 +118,7 @@ for GDALVERSION in $GDAL_VERSIONS; do
         
         if $(dpkg --compare-versions "$GDALVERSION" "ge" "3.0"); then
             sudo dpkg -r proj
-        else
+        fi
     
     else
         echo "Deb found, skipping"
