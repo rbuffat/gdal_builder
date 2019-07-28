@@ -6,7 +6,7 @@ sudo: true
 
 env:
   global:
-    - PYPROJ_VERSION="6.1.1"
+    - PROJVERSION="6.1.1"
     - GDAL_VERSIONS="2.3.3 2.4.2 3.0.1"
     - PROJBUILD=$HOME/projbuild
     - PROJINST=$HOME/projinstall
