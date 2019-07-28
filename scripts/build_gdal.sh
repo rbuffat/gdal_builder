@@ -71,7 +71,7 @@ for GDALVERSION in $GDAL_VERSIONS; do
         # Only GDAL versions >= 2.5 requires proj6
         GDALOPTS_PROJ=""
         DEB_DEPENDENCIES=""
-        if [$(dpkg --compare-versions "$GDALVERSION" "ge" "2.5")] ||  [ "$GDALVERSION" = "trunk" ]; then
+        if $(dpkg --compare-versions "$GDALVERSION" "ge" "2.5") ||  [ "$GDALVERSION" = "trunk" ]; then
         
             GDALOPTS_PROJ="--with-proj=$PROJINST/proj-$PROJVERSION";
             DEB_DEPENDENCIES="--requires=\"proj\""
@@ -129,7 +129,7 @@ for GDALVERSION in $GDAL_VERSIONS; do
         rm -rf $GDALBUILD
         rm -rf $GDALINST
         
-        if [$(dpkg --compare-versions "$GDALVERSION" "ge" "2.5")] ||  [ "$GDALVERSION" = "trunk" ]; then
+        if $(dpkg --compare-versions "$GDALVERSION" "ge" "2.5") ||  [ "$GDALVERSION" = "trunk" ]; then
             sudo dpkg -r proj
         fi
     
@@ -144,4 +144,6 @@ done
 echo "Done building gdal"
 
 ls -lh $GHPAGESDIR
+
+exit 0
 
