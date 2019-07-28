@@ -72,7 +72,7 @@ for GDALVERSION in $GDAL_VERSIONS; do
         DEB_DEPENDENCIES=""
         if $(dpkg --compare-versions "$GDALVERSION" "ge" "2.5"); then
             GDALOPTS_PROJ="--with-proj=$PROJINST/proj-$PROJVERSION";
-            DEB_DEPENDENCIES='--requires="proj (= $PROJVERSION)"'
+            # DEB_DEPENDENCIES='--requires="proj (= $PROJVERSION)"'
             echo $DEB_DEPENDENCIES
             
             # install proj dependency
