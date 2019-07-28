@@ -62,14 +62,26 @@ for GDALVERSION in $GDAL_VERSIONS; do
 
     ls -l $GDALINST
 
-    # GDAL proj option
-    GDALOPTS_PROJ=""
-    if $(dpkg --compare-versions "$GDALVERSION" "ge" "3.0"); then
-        GDALOPTS_PROJ="--with-proj=$PROJINST/proj-$PROJVERSION";
-    fi
     
     # only build if not already installed
     if [ ! -f "$GHPAGESDIR/gdal_$GDALVERSION-1_amd64.deb" ]; then
+    
+        # GDAL proj option
+        GDALOPTS_PROJ=""
+        DEB_DEPENDENCIES=""
+        if $(dpkg --compare-versions "$GDALVERSION" "ge" "3.0"); then
+            GDALOPTS_PROJ="--with-proj=$PROJINST/proj-$PROJVERSION";
+            DEB_DEPENDENCIES="--requires=\"proj \(\>= $PROJVERSION\)\""
+            echo $DEB_DEPENDENCIES
+            
+            # install proj dependency
+            if [ ! -f "$GHPAGESDIR/proj_$PROJVERSION-1_amd64.deb" ]; then
+                exit 1
+            else
+                sudo dpkg -i "$GHPAGESDIR/proj_$PROJVERSION-1_amd64.deb"
+            fi
+            
+        fi
 
         cd $GDALBUIL
 
@@ -93,7 +105,7 @@ for GDALVERSION in $GDAL_VERSIONS; do
 
         # Create deb package
         echo "gdal binary created to be used on travis. Do not use this file if you don't know what you are doing!" > description-pak
-        checkinstall -D --nodoc --install=no -y
+        checkinstall -D --nodoc --install=no -y DEB_DEPENDENCIES
         
         ls -lh        
         mv "gdal_$BASE_GDALVERSION-1_amd64.deb" "$GHPAGESDIR/gdal_$GDALVERSION-1_amd64.deb"
@@ -102,6 +114,11 @@ for GDALVERSION in $GDAL_VERSIONS; do
         # Clean
         rm -rf $GDALBUILD
         rm -rf $GDALINST
+        
+        if $(dpkg --compare-versions "$GDALVERSION" "ge" "3.0"); then
+            sudo dpkg -r proj
+        else
+        
     fi
 
     # change back to travis build dir

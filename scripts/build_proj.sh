@@ -34,6 +34,7 @@ if [ ! -f "$GHPAGESDIR/proj_$PROJVERSION-1_amd64.deb" ]; then
     mv "proj_$PROJVERSION-1_amd64.deb" "$GHPAGESDIR"
 
     rm -rf $PROJBUILD
+    rm -rf $PROJINST
 fi
 
 ls -lh $GHPAGESDIR
