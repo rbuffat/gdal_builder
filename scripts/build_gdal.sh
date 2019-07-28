@@ -61,8 +61,6 @@ for GDALVERSION in $GDAL_VERSIONS; do
     mkdir $GDALINST;
     fi
 
-    ls -l $GDALINST
-
     # only build if not already built before
     if [ ! -f "$GHPAGESDIR/gdal_$GDALVERSION-1_amd64.deb" ]; then
     
@@ -70,8 +68,9 @@ for GDALVERSION in $GDAL_VERSIONS; do
         GDALOPTS_PROJ=""
         DEB_DEPENDENCIES=""
         if $(dpkg --compare-versions "$GDALVERSION" "ge" "2.5"); then
+        
             GDALOPTS_PROJ="--with-proj=$PROJINST/proj-$PROJVERSION";
-            DEB_DEPENDENCIES="--requires=\"proj (= $PROJVERSION)\""
+            DEB_DEPENDENCIES="--requires=\"proj\""
             echo $DEB_DEPENDENCIES
 
             # install proj dependency
