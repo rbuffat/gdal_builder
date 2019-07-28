@@ -62,7 +62,7 @@ for GDALVERSION in $GDAL_VERSIONS; do
     fi
 
     # only build if not already built before
-    if [ ! -f "$GHPAGESDIR/gdal_$GDALVERSION-1_amd64.deb" ] && [! "$GDALVERSION" = "trunk" ]; then
+    if [ ! -f "$GHPAGESDIR/gdal_$GDALVERSION-1_amd64.deb" ] && [ ! "$GDALVERSION" = "trunk" ]; then
     
         # We always rebuild trunk
         if ["$GDALVERSION" = "trunk" ]; then
