@@ -121,7 +121,7 @@ for GDALVERSION in $GDAL_VERSIONS; do
         checkinstall -D $DEB_DEPENDENCIES --nodoc --install=no -y
         
         ls -lh        
-        mv "gdal_$BASE_GDALVERSION-1_amd64.deb" "$GHPAGESDIR/gdal_$GDALVERSION-1_amd64.deb"
+        mv "gdal_*-1_amd64.deb" "$GHPAGESDIR/gdal_$GDALVERSION-1_amd64.deb"
 
         # Clean
         rm -rf $GDALBUILD
