@@ -50,29 +50,31 @@ for GDALVERSION in $GDAL_VERSIONS; do
     echo "Processing gdal: $GDALVERSION"
 
     BASE_GDALVERSION=$(sed 's/[a-zA-Z].*//g' <<< $GDALVERSION)
-
+    echo "1"
     # Create build dir if not exists
     if [ ! -d "$GDALBUILD" ]; then
-    mkdir $GDALBUILD;
+        mkdir $GDALBUILD;
     fi
-
+    echo "2"
     if [ ! -d "$GDALINST" ]; then
-    mkdir $GDALINST;
+        mkdir $GDALINST;
     fi
-
+    echo "3"
     # only build if not already built before
     if [ ! -f "$GHPAGESDIR/gdal_$GDALVERSION-1_amd64.deb" ] || [ "$GDALVERSION" = "trunk" ]; then
-    
+        echo "4"
         # We always rebuild trunk
-        if ["$GDALVERSION" = "trunk" ]; then
+        if [-f "$GHPAGESDIR/proj_$PROJVERSION-1_amd64.deb" ] && [ "$GDALVERSION" = "trunk" ]; then
+            echo "5"
             rm "$GHPAGESDIR/gdal_$GDALVERSION-1_amd64.deb"
         fi
     
+        echo "6"
         # Only GDAL versions >= 2.5 requires proj6
         GDALOPTS_PROJ=""
         DEB_DEPENDENCIES=""
         if $(dpkg --compare-versions "$GDALVERSION" "ge" "2.5") ||  [ "$GDALVERSION" = "trunk" ]; then
-        
+            echo "7"
             GDALOPTS_PROJ="--with-proj=$PROJINST/proj-$PROJVERSION";
             DEB_DEPENDENCIES="--requires=\"proj\""
             echo $DEB_DEPENDENCIES
@@ -129,9 +131,9 @@ for GDALVERSION in $GDAL_VERSIONS; do
         rm -rf $GDALBUILD
         rm -rf $GDALINST
         
-        if $(dpkg --compare-versions "$GDALVERSION" "ge" "2.5") ||  [ "$GDALVERSION" = "trunk" ]; then
-            sudo dpkg -r proj
-        fi
+#         if $(dpkg --compare-versions "$GDALVERSION" "ge" "2.5") ||  [ "$GDALVERSION" = "trunk" ]; then
+#             sudo dpkg -r proj
+#         fi
     
     else
         echo "Deb found, skipping"
