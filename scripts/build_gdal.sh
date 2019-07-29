@@ -59,19 +59,19 @@ for GDALVERSION in $GDAL_VERSIONS; do
     fi
 
     
-    if [ "$GDALVERSION" = "trunk" ]; then
+    if [ "$GDALVERSION" = "master" ]; then
 
-        # We always rebuild trunk
+        # We always rebuild master
         if [ -f "$GHPAGESDIR/gdal_$GDALVERSION-1_amd64.deb" ]; then
             rm "$GHPAGESDIR/gdal_$GDALVERSION-1_amd64.deb"
         fi
     
         # Checkout gdal master
-        git clone -b master --single-branch --depth=1 https://github.com/OSGeo/gdal.git $GDALBUILD/trunk
-        cd $GDALBUILD/trunk/gdal
+        git clone -b master --single-branch --depth=1 https://github.com/OSGeo/gdal.git $GDALBUILD/master
+        cd $GDALBUILD/master/gdal
 
         # Find current gdal version for checkinstall
-        TRUNKVERSION=`cat $GDALBUILD/trunk/gdal/VERSION`
+        TRUNKVERSION=`cat $GDALBUILD/master/gdal/VERSION`
         PKGVERSION="--pkgversion=\"$TRUNKVERSION\""
         echo $PKGVERSION  
     
