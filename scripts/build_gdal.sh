@@ -99,11 +99,11 @@ for GDALVERSION in $GDAL_VERSIONS; do
 
         sudo dpkg -r proj
     
-    else:
+    else
     
         BASE_GDALVERSION=$(sed 's/[a-zA-Z].*//g' <<< $GDALVERSION)
 
-        # We only build gdal if no debb exists
+        # We only build gdal if no deb exists
         if [ ! -f "$GHPAGESDIR/gdal_$GDALVERSION-1_amd64.deb" ]; then
 
             # For GDAL >= 2.5, we need to install proj >= 6.0
