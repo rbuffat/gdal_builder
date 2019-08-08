@@ -32,7 +32,7 @@ jobs:
         
     - stage:  "GDAL 2.2.x"
       env:
-        - PROJVERSION="6.1.1"
+        - PROJVERSION="4.9.3"
         - GDALVERSION="2.2.4"
 
     - stage:  "GDAL 2.3.x"
