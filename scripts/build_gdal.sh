@@ -64,8 +64,10 @@ fi
 
 DEB_PATH="$GHPAGESDIR/gdal_$GDALVERSION_proj_$PROJVERSION-1_amd64.deb"
 
+if [ "$GDALVERSION" = "Skip" ]; then
+    echo "Skip building GDAL"
 
-if [ "$GDALVERSION" = "master" ]; then
+elif [ "$GDALVERSION" = "master" ]; then
 
     GDALOPTS_PROJ="--with-proj=$PROJINST/proj-$PROJVERSION";
 
