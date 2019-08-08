@@ -32,15 +32,17 @@ if [ ! -f "$GHPAGESDIR/proj_$PROJVERSION-1_amd64.deb" ]; then
 
     ls -lh        
     mv "proj_$PROJVERSION-1_amd64.deb" "$GHPAGESDIR"
-
-    rm -rf $PROJBUILD
-    rm -rf $PROJINST
+    
 else
     echo "Deb found, skipping"
 fi
 
-
-ls -lh $GHPAGESDIR
-
 # change back to travis build dir
 cd $TRAVIS_BUILD_DIR
+
+# Clean up
+rm -rf $PROJBUILD
+rm -rf $PROJINST
+
+echo "Done building proj"
+ls -lh $GHPAGESDIR

@@ -54,6 +54,10 @@ else
     GDALOPTS_PROJ="--with-proj=$PROJINST/proj-$PROJVERSION";
 fi
 
+echo $GDALOPTS
+
+echo $GDALOPTS_PROJ
+
 # Create build dir if not exists
 if [ ! -d "$GDALBUILD" ]; then
     mkdir $GDALBUILD;
@@ -160,6 +164,5 @@ rm -rf $GDALINST
 
 
 echo "Done building gdal"
-
 ls -lh $GHPAGESDIR
 
