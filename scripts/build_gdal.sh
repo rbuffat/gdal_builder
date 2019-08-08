@@ -58,12 +58,14 @@ if [ ! -d "$GDALINST" ]; then
     mkdir $GDALINST;
 fi
 
+DEB_PATH="$GHPAGESDIR/gdal_$GDALVERSION_proj_$PROJVERSION-1_amd64.deb"
+
 
 if [ "$GDALVERSION" = "master" ]; then
 
     # We always rebuild master
-    if [ -f "$GHPAGESDIR/gdal_$GDALVERSION-1_amd64.deb" ]; then
-        rm "$GHPAGESDIR/gdal_$GDALVERSION-1_amd64.deb"
+    if [ -f $DEB_PATH ]; then
+        rm $DEB_PATH
     fi
 
     # Checkout gdal master
@@ -95,7 +97,7 @@ if [ "$GDALVERSION" = "master" ]; then
     checkinstall -D $DEB_DEPENDENCIES $PKGVERSION --nodoc --install=no -y
     
     ls -lh        
-    mv -v "gdal_"*"-1_amd64.deb" "$GHPAGESDIR/gdal_$GDALVERSION-1_amd64.deb"
+    mv -v "gdal_"*"-1_amd64.deb" $DEB_PATH
 
     sudo dpkg -r proj
 
@@ -104,7 +106,7 @@ else
     BASE_GDALVERSION=$(sed 's/[a-zA-Z].*//g' <<< $GDALVERSION)
 
     # We only build gdal if no deb exists
-    if [ ! -f "$GHPAGESDIR/gdal_$GDALVERSION-1_amd64.deb" ]; then
+    if [ ! -f $DEB_PATH ]; then
 
         # For GDAL >= 2.5, we need to install proj >= 6.0
         GDALOPTS_PROJ=""
@@ -148,7 +150,7 @@ else
         checkinstall -D $DEB_DEPENDENCIES $PKGVERSION --nodoc --install=no -y
         
         ls -lh
-        mv -v "gdal_"*"-1_amd64.deb" "$GHPAGESDIR/gdal_$GDALVERSION-1_amd64.deb"
+        mv -v "gdal_"*"-1_amd64.deb" $DEB_PATH
         
         if $(dpkg --compare-versions "$GDALVERSION" "ge" "2.5"); then
             sudo dpkg -r proj

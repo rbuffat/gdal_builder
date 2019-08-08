@@ -35,7 +35,10 @@ if [ ! -f "$GHPAGESDIR/proj_$PROJVERSION-1_amd64.deb" ]; then
 
     rm -rf $PROJBUILD
     rm -rf $PROJINST
+else
+    echo "Deb found, skipping"
 fi
+
 
 ls -lh $GHPAGESDIR
 
