@@ -21,7 +21,7 @@ jobs:
         - PROJVERSION="4.9.3"
         - GDALVERSION="Skip"
 
-    - stage:  "PROJ 4.9.3"
+    - stage:  "PROJ 6.1.1"
       env:
         - PROJVERSION="6.1.1"
         - GDALVERSION="Skip"
