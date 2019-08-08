@@ -46,8 +46,13 @@ GDALOPTS="  --with-ogr \
             --with-webp=no"
             
 
-
 echo "Processing gdal: $GDALVERSION"
+
+if $(dpkg --compare-versions "$GDALVERSION" "lt" "2.3"); then
+    GDALOPTS_PROJ="--with-static-proj4==$PROJINST/proj-$PROJVERSION";
+else
+    GDALOPTS_PROJ="--with-proj=$PROJINST/proj-$PROJVERSION";
+fi
 
 # Create build dir if not exists
 if [ ! -d "$GDALBUILD" ]; then
@@ -78,8 +83,6 @@ if [ "$GDALVERSION" = "master" ]; then
     echo $PKGVERSION  
 
     # install proj dependency
-    GDALOPTS_PROJ="--with-proj=$PROJINST/proj-$PROJVERSION";
-    DEB_DEPENDENCIES="--requires=\"proj\""
     if [ ! -f "$GHPAGESDIR/proj_$PROJVERSION-1_amd64.deb" ]; then
         echo "Proj deb not found: $GHPAGESDIR/proj_$PROJVERSION-1_amd64.deb"
         exit 1
@@ -94,12 +97,11 @@ if [ "$GDALVERSION" = "master" ]; then
 
     # Create deb package
     echo "gdal binary created to be used on travis. Do not use this file if you don't know what you are doing!" > description-pak
-    checkinstall -D $DEB_DEPENDENCIES $PKGVERSION --nodoc --install=no -y
+    checkinstall -D --requires="proj" $PKGVERSION --nodoc --install=no -y
     
     ls -lh        
     mv -v "gdal_"*"-1_amd64.deb" $DEB_PATH
 
-    sudo dpkg -r proj
 
 else
 
@@ -108,21 +110,12 @@ else
     # We only build gdal if no deb exists
     if [ ! -f $DEB_PATH ]; then
 
-        # For GDAL >= 2.5, we need to install proj >= 6.0
-        GDALOPTS_PROJ=""
-        DEB_DEPENDENCIES=""
-        if $(dpkg --compare-versions "$GDALVERSION" "ge" "2.5"); then
-
-            GDALOPTS_PROJ="--with-proj=$PROJINST/proj-$PROJVERSION";
-            DEB_DEPENDENCIES="--requires=\"proj\""
-
-            # install proj dependency
-            if [ ! -f "$GHPAGESDIR/proj_$PROJVERSION-1_amd64.deb" ]; then
-                echo "Proj deb not found: $GHPAGESDIR/proj_$PROJVERSION-1_amd64.deb"
-                exit 1
-            else
-                sudo dpkg -i "$GHPAGESDIR/proj_$PROJVERSION-1_amd64.deb"
-            fi
+        # install proj dependency
+        if [ ! -f "$GHPAGESDIR/proj_$PROJVERSION-1_amd64.deb" ]; then
+            echo "Proj deb not found: $GHPAGESDIR/proj_$PROJVERSION-1_amd64.deb"
+            exit 1
+        else
+            sudo dpkg -i "$GHPAGESDIR/proj_$PROJVERSION-1_amd64.deb"
         fi
         
         # Download and extract GDAL
@@ -147,14 +140,11 @@ else
 
         # Create deb package
         echo "gdal binary created to be used on travis. Do not use this file if you don't know what you are doing!" > description-pak
-        checkinstall -D $DEB_DEPENDENCIES $PKGVERSION --nodoc --install=no -y
+        checkinstall -D --requires="proj" $PKGVERSION --nodoc --install=no -y
         
         ls -lh
         mv -v "gdal_"*"-1_amd64.deb" $DEB_PATH
-        
-        if $(dpkg --compare-versions "$GDALVERSION" "ge" "2.5"); then
-            sudo dpkg -r proj
-        fi
+
     else
         echo "Deb found, skipping"
     fi
