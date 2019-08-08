@@ -48,11 +48,6 @@ GDALOPTS="  --with-ogr \
 
 echo "Processing gdal: $GDALVERSION"
 
-if $(dpkg --compare-versions "$GDALVERSION" "lt" "2.3"); then
-    GDALOPTS_PROJ="--with-static-proj4==$PROJINST/proj-$PROJVERSION";
-else
-    GDALOPTS_PROJ="--with-proj=$PROJINST/proj-$PROJVERSION";
-fi
 
 echo $GDALOPTS
 
@@ -71,6 +66,8 @@ DEB_PATH="$GHPAGESDIR/gdal_$GDALVERSION_proj_$PROJVERSION-1_amd64.deb"
 
 
 if [ "$GDALVERSION" = "master" ]; then
+
+    GDALOPTS_PROJ="--with-proj=$PROJINST/proj-$PROJVERSION";
 
     # We always rebuild master
     if [ -f $DEB_PATH ]; then
@@ -113,6 +110,12 @@ else
 
     # We only build gdal if no deb exists
     if [ ! -f $DEB_PATH ]; then
+
+        if $(dpkg --compare-versions "$GDALVERSION" "lt" "2.3"); then
+            GDALOPTS_PROJ="--with-static-proj4==$PROJINST/proj-$PROJVERSION";
+        else
+            GDALOPTS_PROJ="--with-proj=$PROJINST/proj-$PROJVERSION";
+        fi
 
         # install proj dependency
         if [ ! -f "$GHPAGESDIR/proj_$PROJVERSION-1_amd64.deb" ]; then

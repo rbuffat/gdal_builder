@@ -15,10 +15,10 @@ env:
 
 jobs:
   include:
-    - stage:  "GDAL 1.11.x"
-      env:
-        - PROJVERSION="4.8.0"
-        - GDALVERSION="1.11.5"
+    #- stage:  "GDAL 1.11.x"
+      #env:
+        #- PROJVERSION="4.8.0"
+        #- GDALVERSION="1.11.5"
 
     - stage:  "GDAL 2.0..x"
       env:
