@@ -31,15 +31,15 @@ jobs:
         #- PROJVERSION="6.1.1"
         #- GDALVERSION="Skip"
 
-    - stage:  "GDAL 1.11.x"
-      env:
-        - PROJVERSION="4.8.0"
-        - GDALVERSION="1.11.5"
-
-    #- stage:  "GDAL 2.0.x"
+    #- stage:  "GDAL 1.11.x"
       #env:
-        #- PROJVERSION="4.9.3"
-        #- GDALVERSION="2.0.3"
+        #- PROJVERSION="4.8.0"
+        #- GDALVERSION="1.11.5"
+
+    - stage:  "GDAL 2.0.x"
+      env:
+        - PROJVERSION="4.9.3"
+        - GDALVERSION="2.0.3"
 
     #- stage:  "GDAL 2.1.x"
       #env:
