@@ -16,50 +16,50 @@ env:
 jobs:
   include:
 
-    #- stage:  "PROJ 4.8.0"
-      #env:
-        #- PROJVERSION="4.8.0"
-        #- GDALVERSION="Skip"
+    - stage:  "PROJ 4.8.0"
+      env:
+        - PROJVERSION="4.8.0"
+        - GDALVERSION="Skip"
   
-    #- stage:  "PROJ 4.9.3"
-      #env:
-        #- PROJVERSION="4.9.3"
-        #- GDALVERSION="Skip"
+    - stage:  "PROJ 4.9.3"
+      env:
+        - PROJVERSION="4.9.3"
+        - GDALVERSION="Skip"
 
-    #- stage:  "PROJ 6.1.1"
-      #env:
-        #- PROJVERSION="6.1.1"
-        #- GDALVERSION="Skip"
+    - stage:  "PROJ 6.1.1"
+      env:
+        - PROJVERSION="6.1.1"
+        - GDALVERSION="Skip"
 
-    #- stage:  "GDAL 1.11.x"
-      #env:
-        #- PROJVERSION="4.8.0"
-        #- GDALVERSION="1.11.5"
+    - stage:  "GDAL 1.11.x"
+      env:
+        - PROJVERSION="4.8.0"
+        - GDALVERSION="1.11.5"
 
     - stage:  "GDAL 2.0.x"
       env:
         - PROJVERSION="4.9.3"
         - GDALVERSION="2.0.3"
 
-    #- stage:  "GDAL 2.1.x"
-      #env:
-        #- PROJVERSION="4.9.3"
-        #- GDALVERSION="2.1.4"
+    - stage:  "GDAL 2.1.x"
+      env:
+        - PROJVERSION="4.9.3"
+        - GDALVERSION="2.1.4"
         
-    #- stage:  "GDAL 2.2.x"
-      #env:
-        #- PROJVERSION="4.9.3"
-        #- GDALVERSION="2.2.4"
+    - stage:  "GDAL 2.2.x"
+      env:
+        - PROJVERSION="4.9.3"
+        - GDALVERSION="2.2.4"
 
-    #- stage:  "GDAL 2.3.x"
-      #env:
-        #- PROJVERSION="4.9.3"
-        #- GDALVERSION="2.3.3"
+    - stage:  "GDAL 2.3.x"
+      env:
+        - PROJVERSION="4.9.3"
+        - GDALVERSION="2.3.3"
 
-    #- stage:  "GDAL 2.4.x"
-      #env:
-        #- PROJVERSION="4.9.3"
-        #- GDALVERSION="2.4.2"
+    - stage:  "GDAL 2.4.x"
+      env:
+        - PROJVERSION="4.9.3"
+        - GDALVERSION="2.4.2"
 
     - stage:  "GDAL 2.5.x"
       env:
@@ -75,7 +75,7 @@ jobs:
       env:
         - PROJVERSION="6.1.1"
         - GDALVERSION="master"
-        
+
 addons:
   apt:
     packages:
