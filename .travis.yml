@@ -16,20 +16,20 @@ env:
 jobs:
   include:
 
-    - stage:  "PROJ 4.8.0"
-      env:
-        - PROJVERSION="4.8.0"
-        - GDALVERSION="Skip"
+    #- stage:  "PROJ 4.8.0"
+      #env:
+        #- PROJVERSION="4.8.0"
+        #- GDALVERSION="Skip"
   
-    - stage:  "PROJ 4.9.3"
-      env:
-        - PROJVERSION="4.9.3"
-        - GDALVERSION="Skip"
+    #- stage:  "PROJ 4.9.3"
+      #env:
+        #- PROJVERSION="4.9.3"
+        #- GDALVERSION="Skip"
 
-    - stage:  "PROJ 6.1.1"
-      env:
-        - PROJVERSION="6.1.1"
-        - GDALVERSION="Skip"
+    #- stage:  "PROJ 6.1.1"
+      #env:
+        #- PROJVERSION="6.1.1"
+        #- GDALVERSION="Skip"
 
     - stage:  "GDAL 1.11.x"
       env:
