@@ -49,10 +49,6 @@ GDALOPTS="  --with-ogr \
 echo "Processing gdal: $GDALVERSION"
 
 
-echo $GDALOPTS
-
-echo $GDALOPTS_PROJ
-
 # Create build dir if not exists
 if [ ! -d "$GDALBUILD" ]; then
     mkdir $GDALBUILD;
@@ -102,8 +98,8 @@ elif [ "$GDALVERSION" = "master" ]; then
     echo "gdal binary created to be used on travis. Do not use this file if you don't know what you are doing!" > description-pak
     checkinstall -D --requires="proj" $PKGVERSION --nodoc --install=no -y
     
-    ls -lh        
-    mv -v "gdal_"*"-1_amd64.deb" $DEB_PATH
+    ls -lh    
+    mv -v "gdal_"*"-1_amd64.deb" "$DEB_PATH"
 
 
 else
@@ -116,7 +112,7 @@ else
         if $(dpkg --compare-versions "$GDALVERSION" "lt" "2.3"); then
             GDALOPTS_PROJ="--with-static-proj4==$PROJINST/proj-$PROJVERSION";
         else
-            GDALOPTS_PROJ="--with-proj=$PROJINST/proj-$PROJVERSION";
+            GDALOPTS_PROJ="--with-proj=${PROJINST}/proj-$PROJVERSION";
         fi
 
         # install proj dependency
@@ -126,6 +122,9 @@ else
         else
             sudo dpkg -i "$GHPAGESDIR/proj_$PROJVERSION-1_amd64.deb"
         fi
+
+        echo "Proj dir"
+        ls -l $PROJINST/proj-$PROJVERSION
         
         # Download and extract GDAL
         if ( curl -o/dev/null -sfI "http://download.osgeo.org/gdal/$BASE_GDALVERSION/gdal-$GDALVERSION.tar.gz" ); then
@@ -152,7 +151,7 @@ else
         checkinstall -D --requires="proj" $PKGVERSION --nodoc --install=no -y
         
         ls -lh
-        mv -v "gdal_"*"-1_amd64.deb" $DEB_PATH
+        mv -v "gdal_"*"-1_amd64.deb" "$DEB_PATH"
 
     else
         echo "Deb found, skipping"
