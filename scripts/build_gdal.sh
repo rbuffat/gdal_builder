@@ -110,7 +110,7 @@ else
     if [ ! -f $DEB_PATH ]; then
 
         if $(dpkg --compare-versions "$GDALVERSION" "lt" "2.3"); then
-            GDALOPTS_PROJ="--with-static-proj4==$PROJINST/proj-$PROJVERSION";
+            GDALOPTS_PROJ="--with-static-proj4=$PROJINST/proj-$PROJVERSION";
         else
             GDALOPTS_PROJ="--with-proj=${PROJINST}/proj-$PROJVERSION";
         fi
@@ -128,9 +128,9 @@ else
         
         # Download and extract GDAL
         if ( curl -o/dev/null -sfI "http://download.osgeo.org/gdal/$BASE_GDALVERSION/gdal-$GDALVERSION.tar.gz" ); then
-            wget http://download.osgeo.org/gdal/$BASE_GDALVERSION/gdal-$GDALVERSION.tar.gz
+            wget -q http://download.osgeo.org/gdal/$BASE_GDALVERSION/gdal-$GDALVERSION.tar.gz
         else
-            wget http://download.osgeo.org/gdal/old_releases/gdal-$GDALVERSION.tar.gz
+            wget -q http://download.osgeo.org/gdal/old_releases/gdal-$GDALVERSION.tar.gz
         fi
 
         tar -xzf gdal-$GDALVERSION.tar.gz
