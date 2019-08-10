@@ -73,10 +73,12 @@ addons:
     - checkinstall
 
 before_install:
-  - export PATH=$GDALINST/gdal-$GDALVERSION/bin:$PROJINST/proj-$PROJVERSION/bin:$PATH
-  - export LD_LIBRARY_PATH=$GDALINST/gdal-$GDALVERSION/lib:$PROJINST/proj-$PROJVERSION/lib:$LD_LIBRARY_PATH
-  - export PROJ_LIB=$PROJINST/proj-$PROJVERSION/share/proj
-  - git clone --single-branch --branch gh-pages https://github.com/rbuffat/gdal_builder.git $GHPAGESDIR
+  - export DISTRIB_CODENAME=$(lsb_release -cs)
+  - echo $DISTRIB_CODENAME
+  #- export PATH=$GDALINST/gdal-$GDALVERSION/bin:$PROJINST/proj-$PROJVERSION/bin:$PATH
+  #- export LD_LIBRARY_PATH=$GDALINST/gdal-$GDALVERSION/lib:$PROJINST/proj-$PROJVERSION/lib:$LD_LIBRARY_PATH
+  #- export PROJ_LIB=$PROJINST/proj-$PROJVERSION/share/proj
+  - git clone --depth=1 --single-branch --branch gh-pages https://github.com/rbuffat/gdal_builder.git $GHPAGESDIR
   - rm -rf $GHPAGESDIR/.git
 
 install:
