@@ -1,7 +1,7 @@
 #!/bin/sh
 set -e
 
-DISTRIB_CODENAME=$(lsb_release -c)
+DISTRIB_CODENAME=$(lsb_release -cs)
 
 ls -lh $GHPAGESDIR
 
