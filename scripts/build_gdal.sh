@@ -1,6 +1,8 @@
 #!/bin/sh
 set -e
 
+DISTRIB_CODENAME=$(lsb_release -c)
+
 GDALOPTS="  --with-ogr \
             --with-geos \
             --with-expat \
@@ -58,7 +60,7 @@ if [ ! -d "$GDALINST" ]; then
     mkdir $GDALINST;
 fi
 
-DEB_PATH="$GHPAGESDIR/gdal_${GDALVERSION}_proj_${PROJVERSION}-1_amd64.deb"
+DEB_PATH="$GHPAGESDIR/gdal_${GDALVERSION}_proj_${PROJVERSION}-1_amd64_${DISTRIB_CODENAME}.deb"
 
 if [ "$GDALVERSION" = "Skip" ]; then
     echo "Skip building GDAL"
@@ -83,7 +85,7 @@ elif [ "$GDALVERSION" = "master" ]; then
 
     # install proj dependency
     if [ ! -f "$GHPAGESDIR/proj_$PROJVERSION-1_amd64.deb" ]; then
-        echo "Proj deb not found: $GHPAGESDIR/proj_$PROJVERSION-1_amd64.deb"
+        echo "Proj deb not found: $GHPAGESDIR/proj_${PROJVERSION}-1_amd64.deb"
         exit 1
     else
         sudo dpkg -i "$GHPAGESDIR/proj_$PROJVERSION-1_amd64.deb"

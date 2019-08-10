@@ -14,9 +14,11 @@ fi
 
 ls -l $PROJINST
 
-echo "$GHPAGESDIR/proj_$PROJVERSION-1_amd64.deb"
+DEB_PATH="$GHPAGESDIR/proj_${PROJVERSION}-1_amd64_${DISTRIB_CODENAME}.deb"
 
-if [ ! -f "$GHPAGESDIR/proj_$PROJVERSION-1_amd64.deb" ]; then
+echo "$DEB_PATH"
+
+if [ ! -f "$DEB_PATH" ]; then
     
     cd $PROJBUILD
 
@@ -31,7 +33,7 @@ if [ ! -f "$GHPAGESDIR/proj_$PROJVERSION-1_amd64.deb" ]; then
     checkinstall -D --nodoc --install=no -y
 
     ls -lh        
-    mv "proj_$PROJVERSION-1_amd64.deb" "$GHPAGESDIR"
+    mv "proj_$PROJVERSION-1_amd64.deb" "$DEB_PATH"
     
 else
     echo "Deb found, skipping"
