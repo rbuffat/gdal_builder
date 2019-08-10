@@ -61,6 +61,7 @@ if [ ! -d "$GDALINST" ]; then
 fi
 
 DEB_PATH="$GHPAGESDIR/gdal_${GDALVERSION}_proj_${PROJVERSION}-1_amd64_${DISTRIB_CODENAME}.deb"
+PROJ_DEB_PATH="$GHPAGESDIR/proj_${PROJVERSION}-1_amd64_${DISTRIB_CODENAME}.deb"
 
 if [ "$GDALVERSION" = "Skip" ]; then
     echo "Skip building GDAL"
@@ -84,11 +85,11 @@ elif [ "$GDALVERSION" = "master" ]; then
     echo $PKGVERSION  
 
     # install proj dependency
-    if [ ! -f "$GHPAGESDIR/proj_$PROJVERSION-1_amd64.deb" ]; then
-        echo "Proj deb not found: $GHPAGESDIR/proj_${PROJVERSION}-1_amd64.deb"
+    if [ ! -f "$PROJ_DEB_PATH" ]; then
+        echo "Proj deb not found: $PROJ_DEB_PATH"
         exit 1
     else
-        sudo dpkg -i "$GHPAGESDIR/proj_$PROJVERSION-1_amd64.deb"
+        sudo dpkg -i "$PROJ_DEB_PATH"
     fi
 
     # Build gdal
@@ -118,11 +119,11 @@ else
         fi
 
         # install proj dependency
-        if [ ! -f "$GHPAGESDIR/proj_$PROJVERSION-1_amd64.deb" ]; then
-            echo "Proj deb not found: $GHPAGESDIR/proj_$PROJVERSION-1_amd64.deb"
+        if [ ! -f "$PROJ_DEB_PATH" ]; then
+            echo "Proj deb not found: $PROJ_DEB_PATH"
             exit 1
         else
-            sudo dpkg -i "$GHPAGESDIR/proj_$PROJVERSION-1_amd64.deb"
+            sudo dpkg -i "$PROJ_DEB_PATH"
         fi
 
         echo "Proj dir"
