@@ -1,8 +1,6 @@
 #!/bin/sh
 set -e
 
-DISTRIB_CODENAME=$(lsb_release -cs)
-
 ls -lh $GHPAGESDIR
 
 # Create build dir if not exists
