@@ -26,7 +26,7 @@ if [ ! -f "$DEB_PATH" ]; then
     tar -xzf proj-$PROJVERSION.tar.gz
     cd proj-$PROJVERSION
     ./configure --prefix=$PROJINST/proj-$PROJVERSION
-    make -j 2
+    make -s -j 2
 
     # Create deb package
     echo "proj binary created to be used on travis. Do not use this file if you don't know what you are doing!" > description-pak
