@@ -94,7 +94,7 @@ elif [ "$GDALVERSION" = "master" ]; then
     # Build gdal
     echo $GDALOPTS $GDALOPTS_PROJ
     ./configure --prefix=$GDALINST/gdal-$GDALVERSION $GDALOPTS $GDALOPTS_PROJ
-    make -j 2
+    make -s -j 2
 
     # Create deb package
     echo "gdal binary created to be used on travis. Do not use this file if you don't know what you are doing!" > description-pak

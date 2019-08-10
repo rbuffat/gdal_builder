@@ -81,8 +81,8 @@ before_install:
   - rm -rf $GHPAGESDIR/.git
 
 install:
-  - . ./scripts/build_proj.sh
-  - . ./scripts/build_gdal.sh
+  - travis_wait 20 . ./scripts/build_proj.sh
+  - travis_wait 20 . ./scripts/build_gdal.sh
   
 deploy:
   provider: pages

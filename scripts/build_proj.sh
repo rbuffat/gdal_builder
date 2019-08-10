@@ -22,7 +22,7 @@ if [ ! -f "$DEB_PATH" ]; then
     
     cd $PROJBUILD
 
-    wget http://download.osgeo.org/proj/proj-$PROJVERSION.tar.gz
+    wget -q http://download.osgeo.org/proj/proj-$PROJVERSION.tar.gz
     tar -xzf proj-$PROJVERSION.tar.gz
     cd proj-$PROJVERSION
     ./configure --prefix=$PROJINST/proj-$PROJVERSION
