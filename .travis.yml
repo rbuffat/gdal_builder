@@ -2,16 +2,15 @@ dist: xenial
 
 language: minimal
 
-sudo: true
-
 env:
   global:
 
-    - PROJBUILD=$HOME/projbuild
-    - PROJINST=$HOME/projinstall
     - GDALINST=$HOME/gdalinstall
     - GDALBUILD=$HOME/gdalbuild
+    - PROJBUILD=$HOME/projbuild
+    - DEBDIR=$HOME/debdir
     - GHPAGESDIR=$HOME/ghpages
+    - FORCE_BUILD="yes"
 
 jobs:
   include:
@@ -61,6 +60,9 @@ jobs:
         - PROJVERSION="6.1.1"
         - GDALVERSION="master"
 
+git:
+  depth: 1
+        
 addons:
   apt:
     packages:
@@ -70,19 +72,20 @@ addons:
     - gfortran
     - libsqlite3-dev
     - sqlite3
-    - checkinstall
 
 before_install:
   - export DISTRIB_CODENAME=$(lsb_release -cs)
-  #- export PATH=$GDALINST/gdal-$GDALVERSION/bin:$PROJINST/proj-$PROJVERSION/bin:$PATH
-  #- export LD_LIBRARY_PATH=$GDALINST/gdal-$GDALVERSION/lib:$PROJINST/proj-$PROJVERSION/lib:$LD_LIBRARY_PATH
-  #- export PROJ_LIB=$PROJINST/proj-$PROJVERSION/share/proj
+  - export PATH=$GDALINST/gdal-$GDALVERSION/bin:$PROJINST/proj-$PROJVERSION/bin:$PATH
+  - export LD_LIBRARY_PATH=$GDALINST/gdal-$GDALVERSION/lib:$PROJINST/proj-$PROJVERSION/lib:$LD_LIBRARY_PATH
+  - export GDAL_DATA=$GDALINST/gdal-$GDALVERSION/share/gdal
+  - export PROJ_LIB=$PROJINST/proj-$PROJVERSION/share/proj
+
   - git clone -b --depth=1 --single-branch --branch gh-pages https://github.com/rbuffat/gdal_builder.git $GHPAGESDIR
   - rm -rf $GHPAGESDIR/.git
 
 install:
-  - travis_wait 20 . ./scripts/build_proj.sh
-  - travis_wait 20 . ./scripts/build_gdal.sh
+  - . ./scripts/build_proj.sh
+  - . ./scripts/build_gdal.sh
   
 deploy:
   provider: pages

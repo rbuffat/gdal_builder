@@ -1,6 +1,8 @@
 #!/bin/sh
 set -e
 
+cd $TRAVIS_BUILD_DIR
+
 GDALOPTS="  --with-ogr \
             --with-geos \
             --with-expat \
@@ -59,13 +61,14 @@ if [ ! -d "$GDALINST" ]; then
     mkdir $GDALINST;
 fi
 
+if [ ! -d "$DEBDIR" ]; then
+    mkdir $DEBDIRT;
+fi
+
+
 DEB_PATH="$GHPAGESDIR/gdal_${GDALVERSION}_proj_${PROJVERSION}-1_amd64_${DISTRIB_CODENAME}.deb"
-PROJ_DEB_PATH="$GHPAGESDIR/proj_${PROJVERSION}-1_amd64_${DISTRIB_CODENAME}.deb"
 
-if [ "$GDALVERSION" = "Skip" ]; then
-    echo "Skip building GDAL"
-
-elif [ "$GDALVERSION" = "master" ]; then
+if [ "$GDALVERSION" = "master" ]; then
 
     GDALOPTS_PROJ="--with-proj=$PROJINST/proj-$PROJVERSION";
 
@@ -83,25 +86,18 @@ elif [ "$GDALVERSION" = "master" ]; then
     PKGVERSION="--pkgversion=\"$TRUNKVERSION\""
     echo $PKGVERSION  
 
-    # install proj dependency
-    if [ ! -f "$PROJ_DEB_PATH" ]; then
-        echo "Proj deb not found: $PROJ_DEB_PATH"
-        exit 1
-    else
-        sudo dpkg -i "$PROJ_DEB_PATH"
-    fi
-
-    # Build gdal
+     # Build and install gdal
     echo $GDALOPTS $GDALOPTS_PROJ
     ./configure --prefix=$GDALINST/gdal-$GDALVERSION $GDALOPTS $GDALOPTS_PROJ
-    make -s -j 2
+    make -j 2
+    make install
 
-    # Create deb package
-    echo "gdal binary created to be used on travis. Do not use this file if you don't know what you are doing!" > description-pak
-    checkinstall -D --requires="proj" $PKGVERSION --nodoc --install=no -y
-    
+    # Build deb
+    cd $TRAVIS_BUILD_DIR
+    python scripts/create_debian.py $GDALINST/gdal-$GDALVERSION $DEBDIR $GDALVERSION
+    dpkg-deb --build $DEBDIR
     ls -lh    
-    mv -v "gdal_"*"-1_amd64.deb" "$DEB_PATH"
+    mv -v "debdir.deb" "$DEB_PATH"
 
 
 else
@@ -109,20 +105,12 @@ else
     BASE_GDALVERSION=$(sed 's/[a-zA-Z].*//g' <<< $GDALVERSION)
 
     # We only build gdal if no deb exists
-    if [ ! -f $DEB_PATH ]; then
+    if [ ! -f $DEB_PATH ] || [ $FORCE_BUILD="yes" ]; then
 
         if $(dpkg --compare-versions "$GDALVERSION" "lt" "2.3"); then
-            GDALOPTS_PROJ="--with-static-proj4=$PROJINST/proj-$PROJVERSION";
+            GDALOPTS_PROJ="--with-static-proj4=$GDALINST/gdal-$GDALVERSION";
         else
-            GDALOPTS_PROJ="--with-proj=${PROJINST}/proj-$PROJVERSION";
-        fi
-
-        # install proj dependency
-        if [ ! -f "$PROJ_DEB_PATH" ]; then
-            echo "Proj deb not found: $PROJ_DEB_PATH"
-            exit 1
-        else
-            sudo dpkg -i "$PROJ_DEB_PATH"
+            GDALOPTS_PROJ="--with-proj=$GDALINST/gdal-$GDALVERSION";
         fi
 
         echo "Proj dir"
@@ -143,17 +131,18 @@ else
             cd gdal-$GDALVERSION
         fi
         
-        # Build gdal
+        # Build and install gdal
         echo $GDALOPTS $GDALOPTS_PROJ
         ./configure --prefix=$GDALINST/gdal-$GDALVERSION $GDALOPTS $GDALOPTS_PROJ
-        make -s -j 2
+        make -j 2
+        make install
 
-        # Create deb package
-        echo "gdal binary created to be used on travis. Do not use this file if you don't know what you are doing!" > description-pak
-        checkinstall -D --requires="proj" $PKGVERSION --nodoc --install=no -y
-        
-        ls -lh
-        mv -v "gdal_"*"-1_amd64.deb" "$DEB_PATH"
+        # Build deb
+        cd $TRAVIS_BUILD_DIR
+        python scripts/create_debian.py $GDALINST/gdal-$GDALVERSION $DEBDIR $GDALVERSION
+        dpkg-deb --build $DEBDIR
+        ls -lh    
+        mv -v "debdir.deb" "$DEB_PATH"
 
     else
         echo "Deb found, skipping"
