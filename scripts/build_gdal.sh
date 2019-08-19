@@ -66,7 +66,7 @@ if [ ! -d "$DEBDIR" ]; then
 fi
 
 
-DEB_PATH="$GHPAGESDIR/gdal_${GDALVERSION}_proj_${PROJVERSION}-1_amd64_${DISTRIB_CODENAME}.deb"
+DEB_PATH="$GHPAGESDIR/gdal_${GDALVERSION}_proj_${PROJVERSION}_${DISTRIB_CODENAME}.deb"
 
 if [ "$GDALVERSION" = "master" ]; then
 
