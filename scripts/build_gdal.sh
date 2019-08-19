@@ -62,7 +62,7 @@ if [ ! -d "$GDALINST" ]; then
 fi
 
 if [ ! -d "$DEBDIR" ]; then
-    mkdir $DEBDIRT;
+    mkdir $DEBDIR;
 fi
 
 
