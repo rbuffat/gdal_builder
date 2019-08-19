@@ -93,6 +93,7 @@ if [ "$GDALVERSION" = "master" ]; then
     make install
 
     # Build deb
+    cd $TRAVIS_BUILD_DIR
     python scripts/create_debian.py $GDALINST/gdal-$GDALVERSION $DEBDIR $GDALVERSION
     cd $HOME
     dpkg-deb --build $DEBDIR
@@ -134,6 +135,7 @@ else
         make install
 
         # Build deb
+        cd $TRAVIS_BUILD_DIR
         python scripts/create_debian.py $GDALINST/gdal-$GDALVERSION $DEBDIR $GDALVERSION
         cd $HOME
         dpkg-deb --build $DEBDIR
