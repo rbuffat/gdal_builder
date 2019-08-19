@@ -70,7 +70,7 @@ DEB_PATH="$GHPAGESDIR/gdal_${GDALVERSION}_proj_${PROJVERSION}-1_amd64_${DISTRIB_
 
 if [ "$GDALVERSION" = "master" ]; then
 
-    GDALOPTS_PROJ="--with-proj=$PROJINST/proj-$PROJVERSION";
+    GDALOPTS_PROJ="--with-proj=$GDALINST/gdal-$GDALVERSION";
 
     # We always rebuild master
     if [ -f $DEB_PATH ]; then
@@ -112,9 +112,6 @@ else
         else
             GDALOPTS_PROJ="--with-proj=$GDALINST/gdal-$GDALVERSION";
         fi
-
-        echo "Proj dir"
-        ls -l $PROJINST/proj-$PROJVERSION
         
         # Download and extract GDAL
         if ( curl -o/dev/null -sfI "http://download.osgeo.org/gdal/$BASE_GDALVERSION/gdal-$GDALVERSION.tar.gz" ); then
