@@ -93,12 +93,11 @@ if [ "$GDALVERSION" = "master" ]; then
     make install
 
     # Build deb
-    cd $HOME
     python scripts/create_debian.py $GDALINST/gdal-$GDALVERSION $DEBDIR $GDALVERSION
+    cd $HOME
     dpkg-deb --build $DEBDIR
-    ls -lh    
+    ls -lh
     mv -v "debdir.deb" "$DEB_PATH"
-
 
 else
 
@@ -135,8 +134,8 @@ else
         make install
 
         # Build deb
-        cd $HOME
         python scripts/create_debian.py $GDALINST/gdal-$GDALVERSION $DEBDIR $GDALVERSION
+        cd $HOME
         dpkg-deb --build $DEBDIR
         ls -lh
         mv -v "debdir.deb" "$DEB_PATH"
