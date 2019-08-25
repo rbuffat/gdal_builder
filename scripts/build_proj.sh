@@ -1,4 +1,7 @@
-#!/bin/sh
+#!/bin/bash
+#
+# Based on proj/gdal install scripts of Toblerity/Fiona and mapbox/rasterio
+
 set -e
 
 ls -lh $GHPAGESDIR
@@ -12,27 +15,47 @@ if [ ! -d "$GDALINST" ]; then
   mkdir $GDALINST;
 fi
 
-if [ ! -d "$GDALINST/gdal-$GDALVERSION/share/proj" ] || [ $FORCE_BUILD="yes" ]; then
+echo "PROJ VERSION: $PROJVERSION FORCE_BUILD: $FORCE_BUILD" 
+
+ARCHIVE_NAME="$GHPAGESDIR/proj_${PROJVERSION}_${DISTRIB_CODENAME}.tar.gz"
+echo "$ARCHIVE_NAME"
+
+if [ "$FORCE_BUILD" = "yes" ] && [ -f "$ARCHIVE_NAME" ] ; then
+    echo "Delete existing archive"
+    rm $ARCHIVE_NAME
+fi
+
+if [ ! -f "$ARCHIVE_NAME" ]; then
+
+    echo "Build proj $PROJVERSION from source"
     
     cd $PROJBUILD
 
     wget -q http://download.osgeo.org/proj/proj-$PROJVERSION.tar.gz
     tar -xzf proj-$PROJVERSION.tar.gz
     cd proj-$PROJVERSION
-    ./configure --prefix=$GDALINST/gdal-$GDALVERSION
+
+    ./configure --prefix=$PROJINST/proj-$PROJVERSION
     make -j 2
-    
+
     make install
-    
+
+    tar -czvf $ARCHIVE_NAME $PROJINST
+
     # Clean up
     rm -rf $PROJBUILD
 
 else
-    echo "Proj found, skipping"
+
+    echo "Use previously built proj $PROJVERSION"
+    
+    tar -xzvf $ARCHIVE_NAME -C $PROJINST
+
 fi
+
+find $PROJINST
 
 # change back to travis build dir
 cd $TRAVIS_BUILD_DIR
-
 
 echo "Done building proj"

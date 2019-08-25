@@ -1,3 +1,7 @@
+#!/bin/bash
+#
+# Based on proj/gdal install scripts of Toblerity/Fiona and mapbox/rasterio
+
 #!/bin/sh
 set -e
 
@@ -49,8 +53,7 @@ GDALOPTS="  --with-ogr \
             --with-webp=no"
             
 
-echo "Processing gdal: $GDALVERSION"
-
+echo "GDAL VERSION: $GDALVERSION PROJ VERSION: $PROJVERSION FORCE_BUILD: $FORCE_BUILD" 
 
 # Create build dir if not exists
 if [ ! -d "$GDALBUILD" ]; then
@@ -61,20 +64,23 @@ if [ ! -d "$GDALINST" ]; then
     mkdir $GDALINST;
 fi
 
-if [ ! -d "$DEBDIR" ]; then
-    mkdir $DEBDIR;
+
+ARCHIVE_NAME="$GHPAGESDIR/gdal_${GDALVERSION}_proj_${PROJVERSION}_${DISTRIB_CODENAME}.tar.gz"
+
+
+if [ "$FORCE_BUILD" = "yes" ] && [ -f "$ARCHIVE_NAME" ] ; then
+    echo "Delete existing archive"
+    rm $ARCHIVE_NAME
 fi
 
 
-DEB_PATH="$GHPAGESDIR/gdal_${GDALVERSION}_proj_${PROJVERSION}_${DISTRIB_CODENAME}.deb"
-
 if [ "$GDALVERSION" = "master" ]; then
 
-    GDALOPTS_PROJ="--with-proj=$GDALINST/gdal-$GDALVERSION";
+    PROJOPT="--with-proj=$PROJINST/proj-$PROJVERSION"
 
     # We always rebuild master
-    if [ -f $DEB_PATH ]; then
-        rm $DEB_PATH
+    if [ -f $ARCHIVE_NAME ]; then
+        rm $ARCHIVE_NAME
     fi
 
     # Checkout gdal master
@@ -86,31 +92,28 @@ if [ "$GDALVERSION" = "master" ]; then
     PKGVERSION="--pkgversion=\"$TRUNKVERSION\""
     echo $PKGVERSION  
 
-     # Build and install gdal
-    echo $GDALOPTS $GDALOPTS_PROJ
-    ./configure --prefix=$GDALINST/gdal-$GDALVERSION $GDALOPTS $GDALOPTS_PROJ
+    # Build gdal
+    echo $GDALOPTS $PROJOPT
+    ./configure --prefix=$GDALINST/gdal-$GDALVERSION $GDALOPTS $PROJOPT
     make -j 2
+
     make install
 
-    # Build deb
-    cd $TRAVIS_BUILD_DIR
-    python scripts/create_debian.py $GDALINST/gdal-$GDALVERSION $DEBDIR $GDALVERSION
-    cd $HOME
-    dpkg-deb --build $DEBDIR
-    ls -lh
-    mv -v "debdir.deb" "$DEB_PATH"
+    tar -czvf $ARCHIVE_NAME $GDALINST
 
 else
 
     BASE_GDALVERSION=$(sed 's/[a-zA-Z].*//g' <<< $GDALVERSION)
 
-    # We only build gdal if no deb exists
-    if [ ! -f $DEB_PATH ] || [ $FORCE_BUILD="yes" ]; then
+
+    # We only build gdal if no archive exists
+    if [ ! -f $ARCHIVE_NAME ]; then
 
         if $(dpkg --compare-versions "$GDALVERSION" "lt" "2.3"); then
-            GDALOPTS_PROJ="--with-static-proj4=$GDALINST/gdal-$GDALVERSION";
+            PROJOPT="--with-static-proj4=$PROJINST/proj-$PROJVERSION";
         else
-            GDALOPTS_PROJ="--with-proj=$GDALINST/gdal-$GDALVERSION";
+            PROJOPT="--with-proj=$PROJINST/proj-$PROJVERSION";
+
         fi
         
         # Download and extract GDAL
@@ -128,32 +131,26 @@ else
             cd gdal-$GDALVERSION
         fi
         
-        # Build and install gdal
-        echo $GDALOPTS $GDALOPTS_PROJ
-        ./configure --prefix=$GDALINST/gdal-$GDALVERSION $GDALOPTS $GDALOPTS_PROJ
+        # Build gdal
+        echo $GDALOPTS $PROJOPT
+        ./configure --prefix=$GDALINST/gdal-$GDALVERSION $GDALOPTS $PROJOPT
         make -j 2
+
         make install
 
-        # Build deb
-        cd $TRAVIS_BUILD_DIR
-        python scripts/create_debian.py $GDALINST/gdal-$GDALVERSION $DEBDIR $GDALVERSION
-        cd $HOME
-        dpkg-deb --build $DEBDIR
-        ls -lh
-        mv -v "debdir.deb" "$DEB_PATH"
+        tar -czvf $ARCHIVE_NAME $GDALINST
 
     else
-        echo "Deb found, skipping"
+        echo "Archive found, skipping"
     fi
 
 fi
 
+find $GDALINST
+
+
 # change back to travis build dir
 cd $TRAVIS_BUILD_DIR
-
-# Clean up
-rm -rf $GDALBUILD
-rm -rf $GDALINST
 
 
 echo "Done building gdal"

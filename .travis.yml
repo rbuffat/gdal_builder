@@ -2,15 +2,22 @@ dist: xenial
 
 language: minimal
 
+
+sudo: true
+
+git:
+  depth: 1
+
+
 env:
   global:
 
     - GDALINST=$HOME/gdalinstall
     - GDALBUILD=$HOME/gdalbuild
+    - PROJINST=$HOME/projinstall
     - PROJBUILD=$HOME/projbuild
-    - DEBDIR=$HOME/debdir
     - GHPAGESDIR=$HOME/ghpages
-    - FORCE_BUILD="yes"
+    #- FORCE_BUILD="yes"
 
 jobs:
   include:
@@ -60,9 +67,6 @@ jobs:
         - PROJVERSION="6.1.1"
         - GDALVERSION="master"
 
-git:
-  depth: 1
-        
 addons:
   apt:
     packages:
