@@ -1,4 +1,7 @@
-#!/bin/sh
+#!/bin/bash
+#
+# Based on install scripts of Toblerity/Fiona and mapbox/rasterio
+
 set -e
 
 ls -lh $GHPAGESDIR
@@ -12,13 +15,17 @@ if [ ! -d "$PROJINST" ]; then
   mkdir $PROJINST;
 fi
 
-ls -l $PROJINST
+echo "PROJ VERSION: $PROJVERSION FORCE_BUILD: $FORCE_BUILD" 
 
 ARCHIVE_NAME="$GHPAGESDIR/proj_${PROJVERSION}_${DISTRIB_CODENAME}.tar.gz"
-
 echo "$ARCHIVE_NAME"
 
-if [ ! -f "$ARCHIVE_NAME" ] || [ "$FORCE_BUILD" = "yes" ]; then
+if [ "$FORCE_BUILD" = "yes" ] && [ -f "$ARCHIVE_NAME" ] ; then
+    echo "Delete existing archive"
+    rm $ARCHIVE_NAME
+fi
+
+if [ ! -f "$ARCHIVE_NAME" ]; then
 
     echo "Build proj $PROJVERSION from source"
     

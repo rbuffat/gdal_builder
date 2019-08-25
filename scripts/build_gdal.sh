@@ -1,3 +1,7 @@
+#!/bin/bash
+#
+# Based on install scripts of Toblerity/Fiona and mapbox/rasterio
+
 #!/bin/sh
 set -e
 
@@ -47,8 +51,7 @@ GDALOPTS="  --with-ogr \
             --with-webp=no"
             
 
-echo "Processing gdal: $GDALVERSION"
-
+echo "GDAL VERSION: $GDALVERSION PROJ VERSION: $PROJVERSION FORCE_BUILD: $FORCE_BUILD" 
 
 # Create build dir if not exists
 if [ ! -d "$GDALBUILD" ]; then
@@ -59,19 +62,22 @@ if [ ! -d "$GDALINST" ]; then
     mkdir $GDALINST;
 fi
 
-DEB_PATH="$GHPAGESDIR/gdal_${GDALVERSION}_proj_${PROJVERSION}-1_amd64_${DISTRIB_CODENAME}.deb"
-PROJ_DEB_PATH="$GHPAGESDIR/proj_${PROJVERSION}-1_amd64_${DISTRIB_CODENAME}.deb"
+ARCHIVE_NAME="$GHPAGESDIR/gdal_${GDALVERSION}_proj_${PROJVERSION}_${DISTRIB_CODENAME}.tar.gz"
 
-if [ "$GDALVERSION" = "Skip" ]; then
-    echo "Skip building GDAL"
 
-elif [ "$GDALVERSION" = "master" ]; then
+if [ "$FORCE_BUILD" = "yes" ] && [ -f "$ARCHIVE_NAME" ] ; then
+    echo "Delete existing archive"
+    rm $ARCHIVE_NAME
+fi
+
+
+if [ "$GDALVERSION" = "master" ]; then
 
     PROJOPT="--with-proj=$PROJINST/proj-$PROJVERSION"
 
     # We always rebuild master
-    if [ -f $DEB_PATH ]; then
-        rm $DEB_PATH
+    if [ -f $ARCHIVE_NAME ]; then
+        rm $ARCHIVE_NAME
     fi
 
     # Checkout gdal master
@@ -83,25 +89,14 @@ elif [ "$GDALVERSION" = "master" ]; then
     PKGVERSION="--pkgversion=\"$TRUNKVERSION\""
     echo $PKGVERSION  
 
-    # install proj dependency
-    if [ ! -f "$PROJ_DEB_PATH" ]; then
-        echo "Proj deb not found: $PROJ_DEB_PATH"
-        exit 1
-    else
-        sudo dpkg -i "$PROJ_DEB_PATH"
-    fi
-
     # Build gdal
     echo $GDALOPTS $PROJOPT
     ./configure --prefix=$GDALINST/gdal-$GDALVERSION $GDALOPTS $PROJOPT
     make -j 2
 
-    # Create deb package
-    echo "gdal binary created to be used on travis. Do not use this file if you don't know what you are doing!" > description-pak
-    checkinstall -D --requires="proj" $PKGVERSION --nodoc --install=no -y
-    
-    ls -lh    
-    mv -v "gdal_"*"-1_amd64.deb" "$DEB_PATH"
+    make install
+
+    tar -czvf $ARCHIVE_NAME $GDALINST
 
 
 else
@@ -148,18 +143,18 @@ else
         ./configure --prefix=$GDALINST/gdal-$GDALVERSION $GDALOPTS $PROJOPT
         make -j 2
 
-        # Create deb package
-        echo "gdal binary created to be used on travis. Do not use this file if you don't know what you are doing!" > description-pak
-        checkinstall -D --requires="proj" $PKGVERSION --nodoc --install=no -y
-        
-        ls -lh
-        mv -v "gdal_"*"-1_amd64.deb" "$DEB_PATH"
+        make install
+
+        tar -czvf $ARCHIVE_NAME $GDALINST
 
     else
-        echo "Deb found, skipping"
+        echo "Archive found, skipping"
     fi
 
 fi
+
+find $GDALINST
+
 
 # change back to travis build dir
 cd $TRAVIS_BUILD_DIR

@@ -15,7 +15,7 @@ env:
     - PROJINST=$HOME/projinstall
     - PROJBUILD=$HOME/projbuild
     - GHPAGESDIR=$HOME/ghpages
-    - FORCE_BUILD="yes"
+    #- FORCE_BUILD="yes"
 
 jobs:
   include:
