@@ -103,25 +103,14 @@ else
 
     BASE_GDALVERSION=$(sed 's/[a-zA-Z].*//g' <<< $GDALVERSION)
 
-    # We only build gdal if no deb exists
-    if [ ! -f $DEB_PATH ]; then
+    # We only build gdal if no archive exists
+    if [ ! -f $ARCHIVE_NAME ]; then
 
         if $(dpkg --compare-versions "$GDALVERSION" "lt" "2.3"); then
-            PROJOPT=PROJOPT="--with-static-proj4=$PROJINST/proj-$PROJVERSION";
+            PROJOPT="--with-static-proj4=$PROJINST/proj-$PROJVERSION";
         else
             PROJOPT="--with-proj=$PROJINST/proj-$PROJVERSION";
         fi
-
-        # install proj dependency
-        if [ ! -f "$PROJ_DEB_PATH" ]; then
-            echo "Proj deb not found: $PROJ_DEB_PATH"
-            exit 1
-        else
-            sudo dpkg -i "$PROJ_DEB_PATH"
-        fi
-
-        echo "Proj dir"
-        ls -l $PROJINST/proj-$PROJVERSION
         
         # Download and extract GDAL
         if ( curl -o/dev/null -sfI "http://download.osgeo.org/gdal/$BASE_GDALVERSION/gdal-$GDALVERSION.tar.gz" ); then
