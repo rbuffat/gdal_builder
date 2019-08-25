@@ -67,7 +67,7 @@ if [ "$GDALVERSION" = "Skip" ]; then
 
 elif [ "$GDALVERSION" = "master" ]; then
 
-    GDALOPTS_PROJ="--with-proj=$PROJINST/proj-$PROJVERSION";
+    PROJOPT="--with-proj=$PROJINST/proj-$PROJVERSION"
 
     # We always rebuild master
     if [ -f $DEB_PATH ]; then
@@ -92,9 +92,9 @@ elif [ "$GDALVERSION" = "master" ]; then
     fi
 
     # Build gdal
-    echo $GDALOPTS $GDALOPTS_PROJ
-    ./configure --prefix=$GDALINST/gdal-$GDALVERSION $GDALOPTS $GDALOPTS_PROJ
-    make -s -j 2
+    echo $GDALOPTS $PROJOPT
+    ./configure --prefix=$GDALINST/gdal-$GDALVERSION $GDALOPTS $PROJOPT
+    make -j 2
 
     # Create deb package
     echo "gdal binary created to be used on travis. Do not use this file if you don't know what you are doing!" > description-pak
@@ -112,9 +112,9 @@ else
     if [ ! -f $DEB_PATH ]; then
 
         if $(dpkg --compare-versions "$GDALVERSION" "lt" "2.3"); then
-            GDALOPTS_PROJ="--with-static-proj4=$PROJINST/proj-$PROJVERSION";
+            PROJOPT=PROJOPT="--with-static-proj4=$PROJINST/proj-$PROJVERSION";
         else
-            GDALOPTS_PROJ="--with-proj=${PROJINST}/proj-$PROJVERSION";
+            PROJOPT="--with-proj=$PROJINST/proj-$PROJVERSION";
         fi
 
         # install proj dependency
@@ -144,9 +144,9 @@ else
         fi
         
         # Build gdal
-        echo $GDALOPTS $GDALOPTS_PROJ
-        ./configure --prefix=$GDALINST/gdal-$GDALVERSION $GDALOPTS $GDALOPTS_PROJ
-        make -s -j 2
+        echo $GDALOPTS $PROJOPT
+        ./configure --prefix=$GDALINST/gdal-$GDALVERSION $GDALOPTS $PROJOPT
+        make -j 2
 
         # Create deb package
         echo "gdal binary created to be used on travis. Do not use this file if you don't know what you are doing!" > description-pak
@@ -163,10 +163,6 @@ fi
 
 # change back to travis build dir
 cd $TRAVIS_BUILD_DIR
-
-# Clean up
-rm -rf $GDALBUILD
-rm -rf $GDALINST
 
 
 echo "Done building gdal"

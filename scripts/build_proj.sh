@@ -14,11 +14,13 @@ fi
 
 ls -l $PROJINST
 
-DEB_PATH="$GHPAGESDIR/proj_${PROJVERSION}-1_amd64_${DISTRIB_CODENAME}.deb"
+ARCHIVE_NAME="$GHPAGESDIR/proj_${PROJVERSION}_${DISTRIB_CODENAME}.tar.gz"
 
-echo "$DEB_PATH"
+echo "$ARCHIVE_NAME"
 
-if [ ! -f "$DEB_PATH" ]; then
+if [ ! -f "$ARCHIVE_NAME" ] || [ "$FORCE_BUILD" = "yes" ]; then
+
+    echo "Build proj $PROJVERSION from source"
     
     cd $PROJBUILD
 
@@ -26,25 +28,23 @@ if [ ! -f "$DEB_PATH" ]; then
     tar -xzf proj-$PROJVERSION.tar.gz
     cd proj-$PROJVERSION
     ./configure --prefix=$PROJINST/proj-$PROJVERSION
-    make -s -j 2
+    make -j 2
 
-    # Create deb package
-    echo "proj binary created to be used on travis. Do not use this file if you don't know what you are doing!" > description-pak
-    checkinstall -D --nodoc --install=no -y
+    make install
 
-    ls -lh        
-    mv "proj_$PROJVERSION-1_amd64.deb" "$DEB_PATH"
+    tar -czvf $ARCHIVE_NAME $PROJINST
     
 else
-    echo "Deb found, skipping"
+    echo "Use previously built proj $PROJVERSION"
+    
+    tar -xzvf $ARCHIVE_NAME -C $PROJINST
+
 fi
+
+find $PROJINST
 
 # change back to travis build dir
 cd $TRAVIS_BUILD_DIR
-
-# Clean up
-rm -rf $PROJBUILD
-rm -rf $PROJINST
 
 echo "Done building proj"
 ls -lh $GHPAGESDIR
