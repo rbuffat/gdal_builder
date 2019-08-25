@@ -11,8 +11,8 @@ if [ ! -d "$PROJBUILD" ]; then
   mkdir $PROJBUILD;
 fi
 
-if [ ! -d "$GDALINST" ]; then
-  mkdir $GDALINST;
+if [ ! -d "$PROJINST" ]; then
+  mkdir $PROJINST;
 fi
 
 echo "PROJ VERSION: $PROJVERSION FORCE_BUILD: $FORCE_BUILD" 
