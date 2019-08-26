@@ -139,7 +139,7 @@ else
         make install
 
         cd $HOME
-        tar -czvf $ARCHIVE_NAME gdalinstall
+        tar -czvf $ARCHIVE_NAME -C $HOME gdalinstall
 
     else
         echo "Archive found, skipping"
@@ -147,6 +147,7 @@ else
 
 fi
 
+echo "Files in $GDALINST:"
 find $GDALINST
 
 
