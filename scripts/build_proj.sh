@@ -50,7 +50,8 @@ else
 
     echo "Use previously built proj $PROJVERSION"
     
-    tar -xzvf $ARCHIVE_NAME -C $HOME
+    echo "tar -xzvf $ARCHIVE_NAME -C $PROJINST"
+    tar -xzvf "$ARCHIVE_NAME" -C "$PROJINST"
 
 fi
 

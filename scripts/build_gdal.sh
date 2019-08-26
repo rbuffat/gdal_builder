@@ -140,7 +140,7 @@ else
         make install
 
         echo "tar -czvf $ARCHIVE_NAME -C $GDALINST ."
-        tar -czvf $ARCHIVE_NAME -C $GDALINST .
+        tar -czvf "$ARCHIVE_NAME" -C "$GDALINST" .
 
     else
         echo "Archive found, skipping"
