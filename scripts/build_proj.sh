@@ -40,7 +40,8 @@ if [ ! -f "$ARCHIVE_NAME" ]; then
 
     make install
 
-    tar -czvf $ARCHIVE_NAME -C $HOME .
+    echo "tar -czvf $ARCHIVE_NAME -C $PROJINST ."
+    tar -czvf "$ARCHIVE_NAME" -C "$PROJINST" .
 
     # Clean up
     rm -rf $PROJBUILD

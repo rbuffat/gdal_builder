@@ -99,6 +99,7 @@ if [ "$GDALVERSION" = "master" ]; then
 
     make install
 
+    echo "tar -czvf $ARCHIVE_NAME -C $GDALINST ."
     tar -czvf $ARCHIVE_NAME -C $GDALINST .
 
 else
@@ -138,7 +139,7 @@ else
 
         make install
 
-        cd $HOME
+        echo "tar -czvf $ARCHIVE_NAME -C $GDALINST ."
         tar -czvf $ARCHIVE_NAME -C $GDALINST .
 
     else
