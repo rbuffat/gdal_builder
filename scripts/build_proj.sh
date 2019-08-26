@@ -49,11 +49,11 @@ else
 
     echo "Use previously built proj $PROJVERSION"
     
-    tar -xzvf $ARCHIVE_NAME -C $HOME $PROJINST
+    tar -xzvf $ARCHIVE_NAME -C $HOME
 
 fi
 
-echo "Files in $PROJINST"
+echo "Files in $PROJINST:"
 find $PROJINST
 
 # change back to travis build dir
