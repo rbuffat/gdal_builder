@@ -99,7 +99,8 @@ if [ "$GDALVERSION" = "master" ]; then
 
     make install
 
-    tar -czvf $ARCHIVE_NAME $GDALINST
+    echo "tar -czvf $ARCHIVE_NAME -C $GDALINST ."
+    tar -czvf $ARCHIVE_NAME -C $GDALINST .
 
 else
 
@@ -138,8 +139,8 @@ else
 
         make install
 
-        cd $HOME
-        tar -czvf $ARCHIVE_NAME gdalinstall
+        echo "tar -czvf $ARCHIVE_NAME -C $GDALINST ."
+        tar -czvf "$ARCHIVE_NAME" -C "$GDALINST" .
 
     else
         echo "Archive found, skipping"
@@ -147,6 +148,7 @@ else
 
 fi
 
+echo "Files in $GDALINST:"
 find $GDALINST
 
 

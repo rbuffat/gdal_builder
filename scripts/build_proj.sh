@@ -40,8 +40,8 @@ if [ ! -f "$ARCHIVE_NAME" ]; then
 
     make install
 
-    cd $HOME
-    tar -czvf $ARCHIVE_NAME projinstall
+    echo "tar -czvf $ARCHIVE_NAME -C $PROJINST ."
+    tar -czvf "$ARCHIVE_NAME" -C "$PROJINST" .
 
     # Clean up
     rm -rf $PROJBUILD
@@ -50,10 +50,12 @@ else
 
     echo "Use previously built proj $PROJVERSION"
     
-    tar -xzvf $ARCHIVE_NAME -C $PROJINST
+    echo "tar -xzvf $ARCHIVE_NAME -C $PROJINST"
+    tar -xzvf "$ARCHIVE_NAME" -C "$PROJINST"
 
 fi
 
+echo "Files in $PROJINST:"
 find $PROJINST
 
 # change back to travis build dir
