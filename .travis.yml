@@ -27,6 +27,31 @@ jobs:
         - PROJVERSION="4.8.0"
         - GDALVERSION="1.11.5"
 
+    - stage:  "GDAL 1.11.x 2"
+      env:
+        - PROJVERSION="4.9.2"
+        - GDALVERSION="1.11.5"
+
+    - stage:  "GDAL 1.11.x 3"
+      env:
+        - PROJVERSION="4.9.3"
+        - GDALVERSION="1.11.5"
+
+    - stage:  "GDAL 1.11.x 4"
+      env:
+        - PROJVERSION="5.0.1"
+        - GDALVERSION="1.11.5"
+
+    - stage:  "GDAL 1.11.x 5"
+      env:
+        - PROJVERSION="5.1.0"
+        - GDALVERSION="1.11.5"        
+
+    - stage:  "GDAL 1.11.x 6"
+      env:
+        - PROJVERSION="5.2.0"
+        - GDALVERSION="1.11.5"
+
     - stage:  "GDAL 2.0.x"
       env:
         - PROJVERSION="4.9.3"
