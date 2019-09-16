@@ -1,13 +1,11 @@
 dist: xenial
 
-language: minimal
-
+language: python
 
 sudo: true
 
 git:
   depth: 1
-
 
 env:
   global:
@@ -90,6 +88,8 @@ before_install:
 install:
   - . ./scripts/build_proj.sh
   - . ./scripts/build_gdal.sh
+  - python scripts/check_files.py $PROJINST
+  - python scripts/check_files.py $GDALINST
   
 deploy:
   provider: pages
