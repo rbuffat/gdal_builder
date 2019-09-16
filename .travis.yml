@@ -2,6 +2,9 @@ dist: xenial
 
 language: python
 
+python:
+  - "3.6"
+
 sudo: true
 
 git:
@@ -113,8 +116,10 @@ before_install:
 install:
   - . ./scripts/build_proj.sh
   - . ./scripts/build_gdal.sh
-  - ./scripts/check_files.py $PROJINST
-  - ./scripts/check_files.py $GDALINST
+
+script:
+  - python scripts/check_files.py $PROJINST
+  - python scripts/check_files.py $GDALINST
 
 deploy:
   provider: pages

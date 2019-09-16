@@ -5,6 +5,8 @@ import sys
 
 path = sys.argv[1]
 
+print("Check files in {}".format(path))
+
 for root, dirs, files in os.walk(path):
 
     for fname in files:
