@@ -88,9 +88,9 @@ before_install:
 install:
   - . ./scripts/build_proj.sh
   - . ./scripts/build_gdal.sh
-  - . ./scripts/check_files.py $PROJINST
-  - . ./scripts/check_files.py $GDALINST
-  
+  - ./scripts/check_files.py $PROJINST
+  - ./scripts/check_files.py $GDALINST
+
 deploy:
   provider: pages
   skip_cleanup: true
