@@ -27,7 +27,7 @@ addons:
         - sqlite3
 
 before_install:
-    - export ARCHIVE_NAME="$gdalinstall/gdal_${GDALVERSION}_proj_${PROJVERSION}_${DISTRIB_CODENAME}.tar.gz"
+    - export ARCHIVE_NAME="$GDALINST/gdal_${GDALVERSION}_proj_${PROJVERSION}_${DISTRIB_CODENAME}.tar.gz"
     - echo $ARCHIVE_NAME
     - export DISTRIB_CODENAME=$(lsb_release -cs)
     - export PATH=$GDALINST/gdal-$GDALVERSION/bin:$GDALINST/proj-$PROJVERSION/bin:$PATH
