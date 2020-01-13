@@ -14,7 +14,6 @@ git:
   - GDALBUILD=$HOME/gdalbuild
   - PROJINST=$HOME/gdalinstall
   - PROJBUILD=$HOME/projbuild
-  - ARCHIVE_NAME="$GHPAGESDIR/gdal_${GDALVERSION}_proj_${PROJVERSION}_${DISTRIB_CODENAME}.tar.gz"
   - PROJVERSION="6.2.1"
   - GDALVERSION="master"
 
@@ -28,6 +27,7 @@ addons:
     - sqlite3
 
 before_install:
+    - export ARCHIVE_NAME="$gdalinstall/gdal_${GDALVERSION}_proj_${PROJVERSION}_${DISTRIB_CODENAME}.tar.gz"
     - echo $ARCHIVE_NAME
     - export DISTRIB_CODENAME=$(lsb_release -cs)
     - export PATH=$GDALINST/gdal-$GDALVERSION/bin:$GDALINST/proj-$PROJVERSION/bin:$PATH
