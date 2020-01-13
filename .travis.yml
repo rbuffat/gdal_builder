@@ -8,23 +8,23 @@ python:
 git:
   depth: 1
 
-  env:
-    global:
-        - GDALINST=$HOME/gdalinstall
-        - GDALBUILD=$HOME/gdalbuild
-        - PROJINST=$HOME/gdalinstall
-        - PROJBUILD=$HOME/projbuild
-        - PROJVERSION="6.2.1"
-        - GDALVERSION="master"
+env:
+  global:
+    - GDALINST=$HOME/gdalinstall
+    - GDALBUILD=$HOME/gdalbuild
+    - PROJINST=$HOME/gdalinstall
+    - PROJBUILD=$HOME/projbuild
+    - PROJVERSION="6.2.1"
+    - GDALVERSION="master"
 
 addons:
   apt:
     packages:
-    - libatlas-dev
-    - libatlas-base-dev
-    - gfortran
-    - libsqlite3-dev
-    - sqlite3
+        - libatlas-dev
+        - libatlas-base-dev
+        - gfortran
+        - libsqlite3-dev
+        - sqlite3
 
 before_install:
     - export ARCHIVE_NAME="$gdalinstall/gdal_${GDALVERSION}_proj_${PROJVERSION}_${DISTRIB_CODENAME}.tar.gz"
