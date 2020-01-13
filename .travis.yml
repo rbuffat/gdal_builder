@@ -9,13 +9,13 @@ git:
   depth: 1
 
   env:
-  global:
-  - GDALINST=$HOME/gdalinstall
-  - GDALBUILD=$HOME/gdalbuild
-  - PROJINST=$HOME/gdalinstall
-  - PROJBUILD=$HOME/projbuild
-  - PROJVERSION="6.2.1"
-  - GDALVERSION="master"
+    global:
+        - GDALINST=$HOME/gdalinstall
+        - GDALBUILD=$HOME/gdalbuild
+        - PROJINST=$HOME/gdalinstall
+        - PROJBUILD=$HOME/projbuild
+        - PROJVERSION="6.2.1"
+        - GDALVERSION="master"
 
 addons:
   apt:
