@@ -18,7 +18,7 @@ git:
   - PROJVERSION="6.2.1"
   - GDALVERSION="master"
 
-  addons:
+addons:
   apt:
     packages:
     - libatlas-dev
@@ -27,16 +27,16 @@ git:
     - libsqlite3-dev
     - sqlite3
 
-    before_install:
-- echo $ARCHIVE_NAME
-- export DISTRIB_CODENAME=$(lsb_release -cs)
-- export PATH=$GDALINST/gdal-$GDALVERSION/bin:$GDALINST/proj-$PROJVERSION/bin:$PATH
-- export LD_LIBRARY_PATH=$GDALINST/gdal-$GDALVERSION/lib:$GDALINST/proj-$PROJVERSION/lib:$LD_LIBRARY_PATH
-- ". ./scripts/travis_proj_install.sh"
-- ". ./scripts/travis_gdal_install.sh"
-- export GDAL_DATA=$GDALINST/gdal-$GDALVERSION/share/gdal
-- export PROJ_LIB=$GDALINST/gdal-$GDALVERSION/share/proj
-- gdal-config --version
+before_install:
+    - echo $ARCHIVE_NAME
+    - export DISTRIB_CODENAME=$(lsb_release -cs)
+    - export PATH=$GDALINST/gdal-$GDALVERSION/bin:$GDALINST/proj-$PROJVERSION/bin:$PATH
+    - export LD_LIBRARY_PATH=$GDALINST/gdal-$GDALVERSION/lib:$GDALINST/proj-$PROJVERSION/lib:$LD_LIBRARY_PATH
+    - ". ./scripts/travis_proj_install.sh"
+    - ". ./scripts/travis_gdal_install.sh"
+    - export GDAL_DATA=$GDALINST/gdal-$GDALVERSION/share/gdal
+    - export PROJ_LIB=$GDALINST/gdal-$GDALVERSION/share/proj
+    - gdal-config --version
 
 install: true
 
@@ -47,11 +47,11 @@ before_deploy:
     - export TRAVIS_TAG="master"
     - git tag $TRAVIS_TAG
 
-deploy:
-  provider: releases
-  api_key:
-    secure: Fm/MOEG3p7OwYlZoQ3JoSpAL/5GbeDVps+OOkJ39XbF+IF5ZMhdz5DjgD4AzGWX2AF/3VPnyHMKQnTV4CLYekhBuxG1XEfBWwjyK0ir0ZhoN9J+7vTsFnVWKiTx7muP3mrwImfFyIuTYfe2HumdpjC5sQD1wW7xF/CanBh80W0ew875XTWW+ZlaiuIAMEOzt9SptJZKXLs0aoWvQsmH+ryZ42XyagsKLS+uQN6pl5M8cRCghAaHjezvIWZxsHmrlbyiDsX6Noee2ekZKjNtxtOhBjKO1rtnxcPUAHBCISPNFbqrCDda45AyGx+Ul4WG4/rUFrIr2fhCiI8/QBmS88stQmhKO5veR2KGs8yhDLAs97GXYg4gfLFrojucoDXWZCEDCt4m+V3FaUEypfUXc+M0ZsTl/0thJtkiv4ynEX6jXpt+TQetl4wQaNFQ4NTrBvER9Omha4qOKKADOkj7JNV3FlMdsSXXopm2crDISq+sl4KZ/9g9I4Hv8iu7EGt06377ACC5SYPbhkB/pldZqneiryObRZ1d1nZ3U1Go4TpFJvE3SM9YVbas2EniGNCr2/0R7lPRhAyiZB0SEsHer1iLYOdLRzEBbVsuZLZ4gKOWNiGXKBkl5cGpXP4aXaPw9YStD44z1mFwksZGXnleMby9EVpu5BH0BiG3LfCJY0hM=
-  file: $ARCHIVE_NAME
-  overwrite: true
-  on:
-    repo: rbuffat/gdal_builder
+#deploy:
+  #provider: releases
+  #api_key:
+    #secure: Fm/MOEG3p7OwYlZoQ3JoSpAL/5GbeDVps+OOkJ39XbF+IF5ZMhdz5DjgD4AzGWX2AF/3VPnyHMKQnTV4CLYekhBuxG1XEfBWwjyK0ir0ZhoN9J+7vTsFnVWKiTx7muP3mrwImfFyIuTYfe2HumdpjC5sQD1wW7xF/CanBh80W0ew875XTWW+ZlaiuIAMEOzt9SptJZKXLs0aoWvQsmH+ryZ42XyagsKLS+uQN6pl5M8cRCghAaHjezvIWZxsHmrlbyiDsX6Noee2ekZKjNtxtOhBjKO1rtnxcPUAHBCISPNFbqrCDda45AyGx+Ul4WG4/rUFrIr2fhCiI8/QBmS88stQmhKO5veR2KGs8yhDLAs97GXYg4gfLFrojucoDXWZCEDCt4m+V3FaUEypfUXc+M0ZsTl/0thJtkiv4ynEX6jXpt+TQetl4wQaNFQ4NTrBvER9Omha4qOKKADOkj7JNV3FlMdsSXXopm2crDISq+sl4KZ/9g9I4Hv8iu7EGt06377ACC5SYPbhkB/pldZqneiryObRZ1d1nZ3U1Go4TpFJvE3SM9YVbas2EniGNCr2/0R7lPRhAyiZB0SEsHer1iLYOdLRzEBbVsuZLZ4gKOWNiGXKBkl5cGpXP4aXaPw9YStD44z1mFwksZGXnleMby9EVpu5BH0BiG3LfCJY0hM=
+  #file: $ARCHIVE_NAME
+  #overwrite: true
+  #on:
+    #repo: rbuffat/gdal_builder
