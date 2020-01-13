@@ -12,85 +12,17 @@ git:
 
 env:
   global:
-
     - GDALINST=$HOME/gdalinstall
     - GDALBUILD=$HOME/gdalbuild
-    - PROJINST=$HOME/projinstall
+    - PROJINST=$HOME/gdalinstall
     - PROJBUILD=$HOME/projbuild
-    - GHPAGESDIR=$HOME/ghpages
-    #- FORCE_BUILD="yes"
 
 jobs:
   include:
 
-    - stage:  "GDAL 1.11.x"
-      env:
-        - PROJVERSION="4.8.0"
-        - GDALVERSION="1.11.5"
-
-    - stage:  "GDAL 1.11.x 2"
-      env:
-        - PROJVERSION="4.9.2"
-        - GDALVERSION="1.11.5"
-
-    - stage:  "GDAL 1.11.x 3"
-      env:
-        - PROJVERSION="4.9.3"
-        - GDALVERSION="1.11.5"
-
-    - stage:  "GDAL 1.11.x 4"
-      env:
-        - PROJVERSION="5.0.1"
-        - GDALVERSION="1.11.5"
-
-    - stage:  "GDAL 1.11.x 5"
-      env:
-        - PROJVERSION="5.1.0"
-        - GDALVERSION="1.11.5"        
-
-    - stage:  "GDAL 1.11.x 6"
-      env:
-        - PROJVERSION="5.2.0"
-        - GDALVERSION="1.11.5"
-
-    - stage:  "GDAL 2.0.x"
-      env:
-        - PROJVERSION="4.9.3"
-        - GDALVERSION="2.0.3"
-
-    - stage:  "GDAL 2.1.x"
-      env:
-        - PROJVERSION="4.9.3"
-        - GDALVERSION="2.1.4"
-        
-    - stage:  "GDAL 2.2.x"
-      env:
-        - PROJVERSION="4.9.3"
-        - GDALVERSION="2.2.4"
-
-    - stage:  "GDAL 2.3.x"
-      env:
-        - PROJVERSION="4.9.3"
-        - GDALVERSION="2.3.3"
-
-    - stage:  "GDAL 2.4.x"
-      env:
-        - PROJVERSION="4.9.3"
-        - GDALVERSION="2.4.2"
-
-    - stage:  "GDAL 2.5.x"
-      env:
-        - PROJVERSION="6.1.1"
-        - GDALVERSION="2.5.0rc1"
-
-    - stage:  "GDAL 3.0.x"
-      env:
-        - PROJVERSION="6.1.1"
-        - GDALVERSION="3.0.1"
-
     - stage:  "master"
       env:
-        - PROJVERSION="6.1.1"
+        - PROJVERSION="6.2.1"
         - GDALVERSION="master"
 
 addons:
@@ -105,10 +37,10 @@ addons:
 
 before_install:
   - export DISTRIB_CODENAME=$(lsb_release -cs)
-  - export PATH=$GDALINST/gdal-$GDALVERSION/bin:$PROJINST/proj-$PROJVERSION/bin:$PATH
-  - export LD_LIBRARY_PATH=$GDALINST/gdal-$GDALVERSION/lib:$PROJINST/proj-$PROJVERSION/lib:$LD_LIBRARY_PATH
+  - export PATH=$GDALINST/gdal-$GDALVERSION/bin:$GDALINST/proj-$PROJVERSION/bin:$PATH
+  - export LD_LIBRARY_PATH=$GDALINST/gdal-$GDALVERSION/lib:$GDALINST/proj-$PROJVERSION/lib:$LD_LIBRARY_PATH
   - export GDAL_DATA=$GDALINST/gdal-$GDALVERSION/share/gdal
-  - export PROJ_LIB=$PROJINST/proj-$PROJVERSION/share/proj
+  - export PROJ_LIB=$GDALINST/gdal-$GDALVERSION/share/proj
 
   - git clone -b --depth=1 --single-branch --branch gh-pages https://github.com/rbuffat/gdal_builder.git $GHPAGESDIR
   - rm -rf $GHPAGESDIR/.git
@@ -117,9 +49,9 @@ install:
   - . ./scripts/build_proj.sh
   - . ./scripts/build_gdal.sh
 
-script:
-  - python scripts/check_files.py $PROJINST
-  - python scripts/check_files.py $GDALINST
+#script:
+  #- python scripts/check_files.py $PROJINST
+  #- python scripts/check_files.py $GDALINST
 
 deploy:
   provider: pages

@@ -150,6 +150,9 @@ fi
 
 echo "Files in $GDALINST:"
 find $GDALINST
+du $GDALINST
+find $GDALINST | wc -l
+
 
 
 # change back to travis build dir

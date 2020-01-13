@@ -57,6 +57,8 @@ fi
 
 echo "Files in $PROJINST:"
 find $PROJINST
+du $PROJINST
+find $PROJINST | wc -l
 
 # change back to travis build dir
 cd $TRAVIS_BUILD_DIR
