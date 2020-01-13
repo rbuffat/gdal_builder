@@ -1,11 +1,9 @@
-dist: xenial
-
 language: python
+
+dist: xenial
 
 python:
   - "3.6"
-
-sudo: true
 
 git:
   depth: 1
@@ -28,7 +26,6 @@ jobs:
 addons:
   apt:
     packages:
-    - libhdf5-serial-dev
     - libatlas-dev
     - libatlas-base-dev
     - gfortran
@@ -36,18 +33,19 @@ addons:
     - sqlite3
 
 before_install:
-  - export DISTRIB_CODENAME=$(lsb_release -cs)
-  - export PATH=$GDALINST/gdal-$GDALVERSION/bin:$GDALINST/proj-$PROJVERSION/bin:$PATH
-  - export LD_LIBRARY_PATH=$GDALINST/gdal-$GDALVERSION/lib:$GDALINST/proj-$PROJVERSION/lib:$LD_LIBRARY_PATH
-  - export GDAL_DATA=$GDALINST/gdal-$GDALVERSION/share/gdal
-  - export PROJ_LIB=$GDALINST/gdal-$GDALVERSION/share/proj
 
   - git clone -b --depth=1 --single-branch --branch gh-pages https://github.com/rbuffat/gdal_builder.git $GHPAGESDIR
   - rm -rf $GHPAGESDIR/.git
+  - export DISTRIB_CODENAME=$(lsb_release -cs)
+  - export PATH=$GDALINST/gdal-$GDALVERSION/bin:$GDALINST/proj-$PROJVERSION/bin:$PATH
+  - export LD_LIBRARY_PATH=$GDALINST/gdal-$GDALVERSION/lib:$GDALINST/proj-$PROJVERSION/lib:$LD_LIBRARY_PATH
+  - . ./scripts/travis_proj_install.sh
+  - . ./scripts/travis_gdal_install.sh
+  - export GDAL_DATA=$GDALINST/gdal-$GDALVERSION/share/gdal
+  - export PROJ_LIB=$GDALINST/gdal-$GDALVERSION/share/proj
+  - gdal-config --version
 
-install:
-  - . ./scripts/build_proj.sh
-  - . ./scripts/build_gdal.sh
+install: true
 
 #script:
   #- python scripts/check_files.py $PROJINST
