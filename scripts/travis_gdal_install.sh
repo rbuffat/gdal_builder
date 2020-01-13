@@ -88,8 +88,10 @@ if [ "$GDALVERSION" = "master" ]; then
 
     make install
 
-    echo "tar -czvf $ARCHIVE_NAME -C $GDALINST ."
-    tar -czvf $ARCHIVE_NAME -C $GDALINST .
+    cd $TRAVIS_BUILD_DIR
+
+    echo "tar -czvf $ARCHIVE_NAME $GDALINST"
+    tar -czvf $ARCHIVE_NAME $GDALINST
 
 # else
 # 
@@ -142,12 +144,7 @@ find $GDALINST
 du $GDALINST
 find $GDALINST | wc -l
 
-
-
 # change back to travis build dir
 cd $TRAVIS_BUILD_DIR
 
-
 echo "Done building gdal"
-ls -lh $GHPAGESDIR
-
