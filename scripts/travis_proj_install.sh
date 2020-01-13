@@ -1,6 +1,9 @@
 #!/bin/sh
 set -e
 
+echo $PROJBUILD
+echo $PROJINST
+
 # Create build dir if not exists
 if [ ! -d "$PROJBUILD" ]; then
   mkdir $PROJBUILD;
