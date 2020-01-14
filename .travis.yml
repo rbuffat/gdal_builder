@@ -30,6 +30,7 @@ install:
     - mkdir $HOME/ghpages
     - export DISTRIB_CODENAME=$(lsb_release -cs)
     - export ARCHIVE_NAME="$HOME/ghpages/gdal_${GDALVERSION}_proj_${PROJVERSION}_${DISTRIB_CODENAME}.tar.gz"
+    - echo $ARCHIVE_NAME
     - export PATH=$GDALINST/gdal-$GDALVERSION/bin:$GDALINST/proj-$PROJVERSION/bin:$PATH
     - export LD_LIBRARY_PATH=$GDALINST/gdal-$GDALVERSION/lib:$GDALINST/proj-$PROJVERSION/lib:$LD_LIBRARY_PATH
     - ". ./scripts/travis_proj_install.sh"
