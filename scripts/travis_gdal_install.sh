@@ -86,12 +86,12 @@ if [ "$GDALVERSION" = "master" ]; then
     ./configure --prefix=$GDALINST/gdal-$GDALVERSION $GDALOPTS $PROJOPT
     make -j 2
 
-    make install
+#     make install
 
     cd $TRAVIS_BUILD_DIR
 
-    echo "tar -czvf $ARCHIVE_NAME $GDALINST"
-    tar -czvf $ARCHIVE_NAME $GDALINST
+    echo "tar -czvf $ARCHIVE_NAME -C $GDALINST ."
+    tar -czvf "$ARCHIVE_NAME" -C "$GDALINST" .
 
 # else
 # 
