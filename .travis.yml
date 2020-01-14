@@ -38,8 +38,6 @@ before_install:
     - export PROJ_LIB=$GDALINST/gdal-$GDALVERSION/share/proj
 #    - gdal-config --version
 
-install: true
-
 before_deploy:
     # Set up git user name and tag this commit
     - git config --local user.name "Rene Buffat"
