@@ -26,7 +26,7 @@ addons:
         - libsqlite3-dev
         - sqlite3
 
-before_install:
+install:
     - export DISTRIB_CODENAME=$(lsb_release -cs)
     - export ARCHIVE_NAME="$TRAVIS_BUILD_DIR/gdal_${GDALVERSION}_proj_${PROJVERSION}_${DISTRIB_CODENAME}.tar.gz"
     - echo $ARCHIVE_NAME
