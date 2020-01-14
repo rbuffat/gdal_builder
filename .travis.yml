@@ -36,14 +36,7 @@ install:
     - ". ./scripts/travis_gdal_install.sh"
     - export GDAL_DATA=$GDALINST/gdal-$GDALVERSION/share/gdal
     - export PROJ_LIB=$GDALINST/gdal-$GDALVERSION/share/proj
-   - gdal-config --version
-
-#before_deploy:
-    ## Set up git user name and tag this commit
-    #- git config --local user.name "Rene Buffat"
-    #- git config --local user.email "deploy@travis.com"
-    #- export TRAVIS_TAG="master"
-    #- git tag $TRAVIS_TAG
+    - gdal-config --version
 
 deploy:
   provider: pages
