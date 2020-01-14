@@ -84,9 +84,9 @@ if [ "$GDALVERSION" = "master" ]; then
     # Build gdal
     echo $GDALOPTS $PROJOPT
     ./configure --prefix=$GDALINST/gdal-$GDALVERSION $GDALOPTS $PROJOPT
-#    make -j 2
 
-#     make install
+    make -j 2
+    make install
 
     cd $TRAVIS_BUILD_DIR
 
